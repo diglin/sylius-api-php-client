@@ -1,0 +1,5 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+suites:
+    SyliusClient:
+        namespace: Diglin\Sylius\ApiClient
+        psr4_prefix: Diglin\Sylius\ApiClient

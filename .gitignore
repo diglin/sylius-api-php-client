@@ -1,0 +1,8 @@
+bin
+vendor
+composer.lock
+docker-compose.yml
+tests/etc/parameters.yml
+phpspec.yml
+phpunit.xml
+.php_cs.cache
