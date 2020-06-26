@@ -2,6 +2,8 @@
 
 A simple PHP client to use the [Sylius PHP API](https://docs.sylius.com/en/latest/api/).
 
+*IMPORTANT:* Documentation is work in progress.
+
 Matrix compatibility:
 
 | Sylius version(s)  | API PHP Client version  |CI status                                                                                                                 |
