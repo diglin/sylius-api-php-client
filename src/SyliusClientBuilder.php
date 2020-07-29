@@ -66,7 +66,7 @@ use Psr\Http\Message\StreamFactoryInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SyliusClientBuilder
+class SyliusClientBuilder implements SyliusClientBuilderInterface
 {
     /** @var string */
     protected $baseUri;
@@ -200,7 +200,7 @@ class SyliusClientBuilder
         return $this->buildAuthenticatedClient($authentication);
     }
 
-    protected function buildAuthenticatedClient(Authentication $authentication): SyliusClientInterface
+    private function buildAuthenticatedClient(Authentication $authentication): SyliusClientInterface
     {
         [$resourceClient, $pageFactory, $cursorFactory, $fileSystem] = $this->setUp($authentication);
 
