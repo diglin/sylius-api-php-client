@@ -45,11 +45,15 @@ class AuthenticatedHttpClient implements HttpClientInterface
     public function sendRequest($httpMethod, $uri, array $headers = [], $body = null)
     {
         try {
+            $xauthtokenDetected = false;
             foreach ((array) $this->authentication->getXauthtokenHeader() as $name => $value) {
                 $headers[$name] = $value;
+                $xauthtokenDetected = true;
             }
 
-            return $this->basicHttpClient->sendRequest($httpMethod, $uri, $headers, $body);
+            if ($xauthtokenDetected) {
+                return $this->basicHttpClient->sendRequest($httpMethod, $uri, $headers, $body);
+            }
         } catch (UnauthorizedHttpException $e) {
             // Do nothing and process to standard authentication
         }
