@@ -27,10 +27,11 @@ class Filter extends TestCase
 
     public function testFilterBuilder()
     {
-        $builder = (new FilterBuilder(
+        $filters = [
             new \Diglin\Sylius\ApiClient\Filter\Filter('channel', 1),
             new \Diglin\Sylius\ApiClient\Filter\Filter(['date'=> ['from' => ['date' => '2021-02-04']]])
-        ));
+        ];
+        $builder = (new FilterBuilder(...$filters));
 
         $criteria = $builder();
         $this->assertCount(2, $criteria);
