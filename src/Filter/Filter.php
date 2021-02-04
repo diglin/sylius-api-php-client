@@ -3,38 +3,47 @@
  * Diglin GmbH - Switzerland.
  *
  * @author      Sylvain Rayé <support at diglin.com>
- *
  * @category    SyliusApiClient
- *
  * @copyright   2020 - Diglin (https://www.diglin.com)
  */
 
+declare(strict_types=1);
+
 namespace Diglin\Sylius\ApiClient\Filter;
+
+use Diglin\Sylius\ApiClient\ExpressionLanguage\ExpressionLanguageProvider;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 class Filter implements FilterInterface
 {
-    /** @var string */
     private $nameOfCriterion;
-    /** @var string */
-    private $searchPhrase;
-    /** @var string */
-    private $searchOption;
+    private $value;
 
+    /**
+     * If $nameOfCriterion is an array, $value will be ignored
+     */
     public function __construct(
-        string $nameOfCriterion = 'search',
-        string $searchOption = SearchOptions::CONTAINS,
-        string $searchPhrase = ''
-    ) {
+        $nameOfCriterion,
+        $value = ''
+    )
+    {
         $this->nameOfCriterion = $nameOfCriterion;
-        $this->searchPhrase = $searchPhrase;
-        $this->searchOption = $searchOption;
+        $this->value = $value;
     }
 
     public function getCriteria(): array
     {
+        if (is_string($this->nameOfCriterion) && strpos($this->nameOfCriterion, 'criteria') === false) {
+            $this->nameOfCriterion = sprintf('criteria[%s]', $this->nameOfCriterion);
+        } else if (is_array($this->nameOfCriterion)) {
+            $interpreter = new ExpressionLanguage(null, [new ExpressionLanguageProvider()]);
+            $this->nameOfCriterion = $interpreter->evaluate('build_filter_criteria(input)', ['input' => $this->nameOfCriterion]);
+            list($this->nameOfCriterion, $this->value) = explode('=', $this->nameOfCriterion );
+        }
+
         return [
-            printf('criteria[%s][type]', $this->nameOfCriterion) => $this->searchOption,
-            printf('criteria[%s][value]', $this->nameOfCriterion) => $this->searchPhrase,
+            $this->nameOfCriterion => $this->value,
         ];
     }
+
 }

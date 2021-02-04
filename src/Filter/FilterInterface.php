@@ -16,11 +16,5 @@ namespace Diglin\Sylius\ApiClient\Filter;
  */
 interface FilterInterface
 {
-    public function __construct(
-        string $nameOfCriterion = 'search',
-        string $searchOption = SearchOptions::CONTAINS,
-        string $searchPhrase = ''
-    );
-
     public function getCriteria(): array;
 }
