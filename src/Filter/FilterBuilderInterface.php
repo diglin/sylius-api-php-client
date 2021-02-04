@@ -13,7 +13,7 @@ namespace Diglin\Sylius\ApiClient\Filter;
 
 interface FilterBuilderInterface
 {
-    public function __construct(FilterInterface $filter);
+    public function __construct(FilterInterface ...$filters);
 
     public function __invoke(): array;
 }

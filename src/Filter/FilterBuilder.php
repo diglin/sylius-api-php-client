@@ -14,13 +14,17 @@ class FilterBuilder implements FilterBuilderInterface
     /** @var FilterInterface */
     protected $filter;
 
-    public function __construct(FilterInterface $filter)
+    public function __construct(FilterInterface ...$filters)
     {
-        $this->filter = $filter;
+        $this->filters = $filters;
     }
 
     public function __invoke(): array
     {
-        return $this->filter->getCriteria() ?? [];
+        $criteria = [];
+        foreach ($this->filters as $filter) {
+            $criteria = array_merge($criteria, $filter->getCriteria());
+        }
+        return $criteria;
     }
 }
