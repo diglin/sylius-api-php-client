@@ -31,8 +31,8 @@ class SearchFilter implements FilterInterface
     public function getCriteria(): array
     {
         return [
-            printf('criteria[%s][type]', $this->nameOfCriterion) => $this->searchOption,
-            printf('criteria[%s][value]', $this->nameOfCriterion) => $this->searchPhrase,
+            sprintf('criteria[%s][type]', $this->nameOfCriterion) => $this->searchOption,
+            sprintf('criteria[%s][value]', $this->nameOfCriterion) => $this->searchPhrase,
         ];
     }
 }
