@@ -14,13 +14,13 @@ namespace Diglin\Sylius\ApiClient\Filter;
 final class SearchOptions
 {
     public const CONTAINS = 'contains';
-    public const NOT_CONTAINS = 'not contains';
+    public const NOT_CONTAINS = 'not_contains';
     public const EQUAL = 'equal';
-    public const NOT_EQUAL = 'not equal';
-    public const STARTS_WITH = 'starts with';
-    public const ENDS_WITH = 'ends with';
+    public const NOT_EQUAL = 'not_equal';
+    public const STARTS_WITH = 'starts_with';
+    public const ENDS_WITH = 'ends_with';
     public const EMPTY = 'empty';
-    public const NOT_EMPTY = 'not empty';
+    public const NOT_EMPTY = 'not_empty';
     public const IN = 'in';
-    public const NOT_IN = 'not in';
+    public const NOT_IN = 'not_in';
 }
