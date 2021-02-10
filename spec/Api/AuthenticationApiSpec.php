@@ -41,13 +41,13 @@ class AuthenticationApiSpec extends ObjectBehavior
 
         $response->getBody()->willReturn($body);
         $responseContent = <<<'JSON'
-                        {
-                            "access_token": "foo",
-                            "expires_in": 3600,
-                            "token_type": "bearer",
-                            "scope": null,
-                            "refresh_token": "bar"
-                        }
+            {
+                "access_token": "foo",
+                "expires_in": 3600,
+                "token_type": "bearer",
+                "scope": null,
+                "refresh_token": "bar"
+            }
             JSON;
         $body->getContents()->willReturn($responseContent);
 
@@ -78,13 +78,13 @@ class AuthenticationApiSpec extends ObjectBehavior
 
         $response->getBody()->willReturn($body);
         $responseContent = <<<'JSON'
-                        {
-                            "access_token": "foo",
-                            "expires_in": 3600,
-                            "token_type": "bearer",
-                            "scope": null,
-                            "refresh_token": "baz"
-                        }
+            {
+                "access_token": "foo",
+                "expires_in": 3600,
+                "token_type": "bearer",
+                "scope": null,
+                "refresh_token": "baz"
+            }
             JSON;
         $body->getContents()->willReturn($responseContent);
 

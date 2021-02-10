@@ -15,15 +15,15 @@ use Http\Message\StreamFactory;
 
 interface SyliusClientBuilderInterface
 {
-    public function setBaseUri(string $baseUri);
+    public function setBaseUri(string $baseUri): self;
 
-    public function setDefaultHeaders(array $headers);
+    public function setDefaultHeaders(array $headers): self;
 
-    public function setHttpClient(Client $httpClient);
+    public function setHttpClient(Client $httpClient): self;
 
-    public function setRequestFactory(RequestFactory $requestFactory);
+    public function setRequestFactory(RequestFactory $requestFactory): self;
 
-    public function setStreamFactory(StreamFactory $streamFactory);
+    public function setStreamFactory(StreamFactory $streamFactory): self;
 
     public function buildAuthenticatedByPassword(
         string $clientId,
