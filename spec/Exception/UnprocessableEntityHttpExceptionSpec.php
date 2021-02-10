@@ -25,22 +25,21 @@ class UnprocessableEntityHttpExceptionSpec extends ObjectBehavior
         $response->getStatusCode()->willReturn(422);
         $response->getBody()->willReturn($body);
         $body->rewind()->shouldBeCalled();
-        $body->getContents()->willReturn(
-            <<<'JSON'
-                    {
-                        "code": "422",
-                        "message": "The response message",
-                        "errors": [
-                            {
-                                "property": "labels",
-                                "message": "The first error"
-                            },
-                            {
-                                "property": "labels",
-                                "message": "The second error"
-                            }
-                        ]
-                    }
+        $body->getContents()->willReturn(<<<'JSON'
+                {
+                    "code": "422",
+                    "message": "The response message",
+                    "errors": [
+                        {
+                            "property": "labels",
+                            "message": "The first error"
+                        },
+                        {
+                            "property": "labels",
+                            "message": "The second error"
+                        }
+                    ]
+                }
                 JSON
         );
 
@@ -61,11 +60,10 @@ class UnprocessableEntityHttpExceptionSpec extends ObjectBehavior
         $response->getStatusCode()->willReturn(422);
         $response->getBody()->willReturn($body);
         $body->rewind()->shouldBeCalled();
-        $body->getContents()->willReturn(
-            <<<'JSON'
-                    {
-                        "code": "422",
-                    }
+        $body->getContents()->willReturn(<<<'JSON'
+                {
+                    "code": "422",
+                }
                 JSON
         );
 

@@ -11,31 +11,7 @@
 
 namespace Diglin\Sylius\ApiClient;
 
-use Diglin\Sylius\ApiClient\Api\CartsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ChannelsApiInterface;
-use Diglin\Sylius\ApiClient\Api\CountriesApiInterface;
-use Diglin\Sylius\ApiClient\Api\CurrenciesApiInterface;
-use Diglin\Sylius\ApiClient\Api\CustomersApiInterface;
-use Diglin\Sylius\ApiClient\Api\ExchangeRatesApiInterface;
-use Diglin\Sylius\ApiClient\Api\LocalesApiInterface;
-use Diglin\Sylius\ApiClient\Api\OrdersApiInterface;
-use Diglin\Sylius\ApiClient\Api\PaymentMethodsApiInterface;
-use Diglin\Sylius\ApiClient\Api\PaymentsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductAssociationTypesApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductAttributesApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductOptionsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductReviewsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductVariantsApiInterface;
-use Diglin\Sylius\ApiClient\Api\PromotionCouponsApiInterface;
-use Diglin\Sylius\ApiClient\Api\PromotionsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ShipmentsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ShippingCategoriesApi;
-use Diglin\Sylius\ApiClient\Api\TaxCategoriesApiInterface;
-use Diglin\Sylius\ApiClient\Api\TaxonsApiInterface;
-use Diglin\Sylius\ApiClient\Api\TaxRatesApiInterface;
-use Diglin\Sylius\ApiClient\Api\UsersApiInterface;
-use Diglin\Sylius\ApiClient\Api\ZonesApiInterface;
+use Diglin\Sylius\ApiClient\Api;
 use Diglin\Sylius\ApiClient\Security\Authentication;
 
 class SyliusClient implements SyliusClientInterface
@@ -43,84 +19,84 @@ class SyliusClient implements SyliusClientInterface
     /** @var Authentication */
     private $authentication;
 
-    /** @var ChannelsApiInterface */
+    /** @var Api\ChannelsApiInterface */
     private $channelsApi;
-    /** @var UsersApiInterface */
+    /** @var Api\UsersApiInterface */
     private $usersApi;
-    /** @var CustomersApiInterface */
+    /** @var Api\CustomersApiInterface */
     private $customersApi;
-    /** @var ProductsApiInterface */
+    /** @var Api\ProductsApiInterface */
     private $productsApi;
-    /** @var CartsApiInterface */
+    /** @var Api\CartsApiInterface */
     private $cartsApi;
-    /** @var OrdersApiInterface */
+    /** @var Api\OrdersApiInterface */
     private $ordersApi;
-    /** @var PaymentsApiInterface */
+    /** @var Api\PaymentsApiInterface */
     private $paymentsApi;
-    /** @var ShipmentsApiInterface */
+    /** @var Api\ShipmentsApiInterface */
     private $shipmentsApi;
-    /** @var ShippingCategoriesApi */
+    /** @var Api\ShippingCategoriesApiInterface */
     private $shippingCategoriesApi;
-    /** @var LocalesApiInterface */
+    /** @var Api\LocalesApiInterface */
     private $localesApi;
-    /** @var CurrenciesApiInterface */
+    /** @var Api\CurrenciesApiInterface */
     private $currenciesApi;
-    /** @var CountriesApiInterface */
+    /** @var Api\CountriesApiInterface */
     private $countriesApi;
-    /** @var ExchangeRatesApiInterface */
+    /** @var Api\ExchangeRatesApiInterface */
     private $exchangeRatesApi;
-    /** @var PaymentMethodsApiInterface */
+    /** @var Api\PaymentMethodsApiInterface */
     private $paymentMethodsApi;
-    /** @var ProductAttributesApiInterface */
+    /** @var Api\ProductAttributesApiInterface */
     private $productAttributesApi;
-    /** @var ProductAssociationTypesApiInterface */
+    /** @var Api\ProductAssociationTypesApiInterface */
     private $productAssociationTypesApi;
-    /** @var ProductOptionsApiInterface */
+    /** @var Api\ProductOptionsApiInterface */
     private $productOptionsApi;
-    /** @var ProductReviewsApiInterface */
+    /** @var Api\ProductReviewsApiInterface */
     private $productReviewsApi;
-    /** @var ProductVariantsApiInterface */
+    /** @var Api\ProductVariantsApiInterface */
     private $productVariantsApi;
-    /** @var PromotionsApiInterface */
+    /** @var Api\PromotionsApiInterface */
     private $promotionsApi;
-    /** @var PromotionCouponsApiInterface */
+    /** @var Api\PromotionCouponsApiInterface */
     private $promotionCouponsApi;
-    /** @var TaxCategoriesApiInterface */
+    /** @var Api\TaxCategoriesApiInterface */
     private $taxCategoriesApi;
-    /** @var TaxRatesApiInterface */
+    /** @var Api\TaxRatesApiInterface */
     private $taxRatesApi;
-    /** @var TaxonsApiInterface */
+    /** @var Api\TaxonsApiInterface */
     private $taxonsApi;
-    /** @var ZonesApiInterface */
+    /** @var Api\ZonesApiInterface */
     private $zonesApi;
 
     public function __construct(
         Authentication $authentication,
-        CartsApiInterface $cartsApi,
-        ChannelsApiInterface $channelsApi,
-        CountriesApiInterface $countriesApi,
-        CurrenciesApiInterface $currenciesApi,
-        CustomersApiInterface $customersApi,
-        ExchangeRatesApiInterface $exchangeRatesApi,
-        LocalesApiInterface $localesApi,
-        OrdersApiInterface $ordersApi,
-        PaymentMethodsApiInterface $paymentMethodApi,
-        PaymentsApiInterface $paymentsApi,
-        ProductsApiInterface $productsApi,
-        ProductAttributesApiInterface $productAttributesApi,
-        ProductAssociationTypesApiInterface $productAssociationTypesApi,
-        ProductOptionsApiInterface $productOptionsApi,
-        ProductReviewsApiInterface $productReviewsApi,
-        ProductVariantsApiInterface $productVariantsApi,
-        PromotionsApiInterface $promotionsApi,
-        PromotionCouponsApiInterface $promotionCouponsApi,
-        ShipmentsApiInterface $shipmentsApi,
-        ShippingCategoriesApi $shippingCategoriesApi,
-        TaxCategoriesApiInterface $taxCategoriesApi,
-        TaxRatesApiInterface $taxRatesApi,
-        TaxonsApiInterface $taxonsApi,
-        UsersApiInterface $usersApi,
-        ZonesApiInterface $zonesApi
+        Api\CartsApiInterface $cartsApi,
+        Api\ChannelsApiInterface $channelsApi,
+        Api\CountriesApiInterface $countriesApi,
+        Api\CurrenciesApiInterface $currenciesApi,
+        Api\CustomersApiInterface $customersApi,
+        Api\ExchangeRatesApiInterface $exchangeRatesApi,
+        Api\LocalesApiInterface $localesApi,
+        Api\OrdersApiInterface $ordersApi,
+        Api\PaymentMethodsApiInterface $paymentMethodApi,
+        Api\PaymentsApiInterface $paymentsApi,
+        Api\ProductsApiInterface $productsApi,
+        Api\ProductAttributesApiInterface $productAttributesApi,
+        Api\ProductAssociationTypesApiInterface $productAssociationTypesApi,
+        Api\ProductOptionsApiInterface $productOptionsApi,
+        Api\ProductReviewsApiInterface $productReviewsApi,
+        Api\ProductVariantsApiInterface $productVariantsApi,
+        Api\PromotionsApiInterface $promotionsApi,
+        Api\PromotionCouponsApiInterface $promotionCouponsApi,
+        Api\ShipmentsApiInterface $shipmentsApi,
+        Api\ShippingCategoriesApiInterface $shippingCategoriesApi,
+        Api\TaxCategoriesApiInterface $taxCategoriesApi,
+        Api\TaxRatesApiInterface $taxRatesApi,
+        Api\TaxonsApiInterface $taxonsApi,
+        Api\UsersApiInterface $usersApi,
+        Api\ZonesApiInterface $zonesApi
     ) {
         $this->authentication = $authentication;
         $this->channelsApi = $channelsApi;
@@ -150,122 +126,122 @@ class SyliusClient implements SyliusClientInterface
         $this->zonesApi = $zonesApi;
     }
 
-    public function getZonesApi(): ZonesApiInterface
+    public function getZonesApi(): Api\ZonesApiInterface
     {
         return $this->zonesApi;
     }
 
-    public function getTaxonsApi(): TaxonsApiInterface
+    public function getTaxonsApi(): Api\TaxonsApiInterface
     {
         return $this->taxonsApi;
     }
 
-    public function getTaxRatesApi(): TaxRatesApiInterface
+    public function getTaxRatesApi(): Api\TaxRatesApiInterface
     {
         return $this->taxRatesApi;
     }
 
-    public function getTaxCategoriesApi(): TaxCategoriesApiInterface
+    public function getTaxCategoriesApi(): Api\TaxCategoriesApiInterface
     {
         return $this->taxCategoriesApi;
     }
 
-    public function getPromotionCouponsApi(): PromotionCouponsApiInterface
+    public function getPromotionCouponsApi(): Api\PromotionCouponsApiInterface
     {
         return $this->promotionCouponsApi;
     }
 
-    public function getPromotionsApi(): PromotionsApiInterface
+    public function getPromotionsApi(): Api\PromotionsApiInterface
     {
         return $this->promotionsApi;
     }
 
-    public function getProductVariantsApi(): ProductVariantsApiInterface
+    public function getProductVariantsApi(): Api\ProductVariantsApiInterface
     {
         return $this->productVariantsApi;
     }
 
-    public function getProductReviewsApi(): ProductReviewsApiInterface
+    public function getProductReviewsApi(): Api\ProductReviewsApiInterface
     {
         return $this->productReviewsApi;
     }
 
-    public function getProductOptionsApi(): ProductOptionsApiInterface
+    public function getProductOptionsApi(): Api\ProductOptionsApiInterface
     {
         return $this->productOptionsApi;
     }
 
-    public function getProductAssociationTypesApi(): ProductAssociationTypesApiInterface
+    public function getProductAssociationTypesApi(): Api\ProductAssociationTypesApiInterface
     {
         return $this->productAssociationTypesApi;
     }
 
-    public function getProductAttributesApi(): ProductAttributesApiInterface
+    public function getProductAttributesApi(): Api\ProductAttributesApiInterface
     {
         return $this->productAttributesApi;
     }
 
-    public function getShippingCategoriesApi(): ShippingCategoriesApi
+    public function getShippingCategoriesApi(): Api\ShippingCategoriesApi
     {
         return $this->shippingCategoriesApi;
     }
 
-    public function getLocalesApi(): LocalesApiInterface
+    public function getLocalesApi(): Api\LocalesApiInterface
     {
         return $this->localesApi;
     }
 
-    public function getCurrenciesApi(): CurrenciesApiInterface
+    public function getCurrenciesApi(): Api\CurrenciesApiInterface
     {
         return $this->currenciesApi;
     }
 
-    public function getCountriesApi(): CountriesApiInterface
+    public function getCountriesApi(): Api\CountriesApiInterface
     {
         return $this->countriesApi;
     }
 
-    public function getExchangeRatesApi(): ExchangeRatesApiInterface
+    public function getExchangeRatesApi(): Api\ExchangeRatesApiInterface
     {
         return $this->exchangeRatesApi;
     }
 
-    public function getPaymentMethodsApi(): PaymentMethodsApiInterface
+    public function getPaymentMethodsApi(): Api\PaymentMethodsApiInterface
     {
         return $this->paymentMethodsApi;
     }
 
-    public function getUsersApi(): UsersApiInterface
+    public function getUsersApi(): Api\UsersApiInterface
     {
         return $this->usersApi;
     }
 
-    public function getCustomersApi(): CustomersApiInterface
+    public function getCustomersApi(): Api\CustomersApiInterface
     {
         return $this->customersApi;
     }
 
-    public function getProductsApi(): ProductsApiInterface
+    public function getProductsApi(): Api\ProductsApiInterface
     {
         return $this->productsApi;
     }
 
-    public function getCartsApi(): CartsApiInterface
+    public function getCartsApi(): Api\CartsApiInterface
     {
         return $this->cartsApi;
     }
 
-    public function getOrdersApi(): OrdersApiInterface
+    public function getOrdersApi(): Api\OrdersApiInterface
     {
         return $this->ordersApi;
     }
 
-    public function getPaymentsApi(): PaymentsApiInterface
+    public function getPaymentsApi(): Api\PaymentsApiInterface
     {
         return $this->paymentsApi;
     }
 
-    public function getShipmentsApi(): ShipmentsApiInterface
+    public function getShipmentsApi(): Api\ShipmentsApiInterface
     {
         return $this->shipmentsApi;
     }
@@ -280,7 +256,7 @@ class SyliusClient implements SyliusClientInterface
         return $this->authentication->getRefreshToken();
     }
 
-    public function getChannelsApi(): ChannelsApiInterface
+    public function getChannelsApi(): Api\ChannelsApiInterface
     {
         return $this->channelsApi;
     }

@@ -35,17 +35,16 @@ class ResourceClientSpec extends ObjectBehavior
     public function it_gets_resource($httpClient, $uriGenerator, ResponseInterface $response, StreamInterface $responseBody)
     {
         $uri = 'http://diglin.com/api/rest/v1/categories/winter_collection';
-        $resource =
-<<<'JSON'
-    {
-        "code": "winter_collection",
-        "parent": null,
-        "labels": {
-            "en_US": "Winter collection",
-            "fr_FR": "Collection hiver"
-        }
-    }
-    JSON;
+        $resource = <<<'JSON'
+            {
+                "code": "winter_collection",
+                "parent": null,
+                "labels": {
+                    "en_US": "Winter collection",
+                    "fr_FR": "Collection hiver"
+                }
+            }
+            JSON;
 
         $uriGenerator
             ->generate('api/rest/v1/categories/%s', ['winter_collection'], [])
@@ -231,13 +230,12 @@ class ResourceClientSpec extends ObjectBehavior
             ->willReturn($uri)
         ;
 
-        $body =
-<<<'JSON'
-    {"code":"category_1"}
-    {"code":"category_2"}
-    {"code":"category_3"}
-    {"code":"category_4"}
-    JSON;
+        $body = <<<'JSON'
+            {"code":"category_1"}
+            {"code":"category_2"}
+            {"code":"category_3"}
+            {"code":"category_4"}
+            JSON;
 
         $httpClient
             ->sendRequest('PATCH', $uri, ['Content-Type' => 'application/vnd.akeneo.collection+json'], $body)

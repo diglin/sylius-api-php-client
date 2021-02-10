@@ -11,33 +11,7 @@
 
 namespace Diglin\Sylius\ApiClient;
 
-use Diglin\Sylius\ApiClient\Api\ApiAwareInterface;
-use Diglin\Sylius\ApiClient\Api\AuthenticationApi;
-use Diglin\Sylius\ApiClient\Api\CartsApi;
-use Diglin\Sylius\ApiClient\Api\ChannelsApi;
-use Diglin\Sylius\ApiClient\Api\CountriesApi;
-use Diglin\Sylius\ApiClient\Api\CurrenciesApi;
-use Diglin\Sylius\ApiClient\Api\CustomersApi;
-use Diglin\Sylius\ApiClient\Api\ExchangeRatesApi;
-use Diglin\Sylius\ApiClient\Api\LocalesApi;
-use Diglin\Sylius\ApiClient\Api\OrdersApi;
-use Diglin\Sylius\ApiClient\Api\PaymentMethodsApi;
-use Diglin\Sylius\ApiClient\Api\PaymentsApi;
-use Diglin\Sylius\ApiClient\Api\ProductAssociationTypesApi;
-use Diglin\Sylius\ApiClient\Api\ProductAttributesApi;
-use Diglin\Sylius\ApiClient\Api\ProductOptionsApi;
-use Diglin\Sylius\ApiClient\Api\ProductReviewsApi;
-use Diglin\Sylius\ApiClient\Api\ProductsApi;
-use Diglin\Sylius\ApiClient\Api\ProductVariantsApi;
-use Diglin\Sylius\ApiClient\Api\PromotionCouponsApi;
-use Diglin\Sylius\ApiClient\Api\PromotionsApi;
-use Diglin\Sylius\ApiClient\Api\ShipmentsApi;
-use Diglin\Sylius\ApiClient\Api\ShippingCategoriesApi;
-use Diglin\Sylius\ApiClient\Api\TaxCategoriesApi;
-use Diglin\Sylius\ApiClient\Api\TaxonsApi;
-use Diglin\Sylius\ApiClient\Api\TaxRatesApi;
-use Diglin\Sylius\ApiClient\Api\UsersApi;
-use Diglin\Sylius\ApiClient\Api\ZonesApi;
+use Diglin\Sylius\ApiClient\Api;
 use Diglin\Sylius\ApiClient\Client\AuthenticatedHttpClient;
 use Diglin\Sylius\ApiClient\Client\HttpClient;
 use Diglin\Sylius\ApiClient\Client\ResourceClient;
@@ -83,13 +57,13 @@ class SyliusClientBuilder implements SyliusClientBuilderInterface
     /** @var FileSystemInterface */
     protected $fileSystem;
 
-    /** @var ApiAwareInterface[] */
+    /** @var Api\ApiAwareInterface[] */
     protected $apiRegistry = [];
 
     /** @var array */
     protected $defaultHeaders = [];
 
-    public function __construct(?ApiAwareInterface ...$apis)
+    public function __construct(?Api\ApiAwareInterface ...$apis)
     {
         foreach ($apis as $api) {
             $this->addApi($api);
@@ -104,7 +78,7 @@ class SyliusClientBuilder implements SyliusClientBuilderInterface
         $uriGenerator = new UriGenerator($this->baseUri);
         $httpClient = new HttpClient($this->getHttpClient(), $this->getRequestFactory(), $this->getStreamFactory(), $this->defaultHeaders);
 
-        $authenticationApi = new AuthenticationApi($httpClient, $uriGenerator);
+        $authenticationApi = new Api\AuthenticationApi($httpClient, $uriGenerator);
         $authenticatedHttpClient = new AuthenticatedHttpClient($httpClient, $authenticationApi, $authentication);
         $multipartStreamBuilderFactory = new MultipartStreamBuilderFactory($this->getStreamFactory());
         $upsertListResponseFactory = new UpsertResourceListResponseFactory();
@@ -123,43 +97,55 @@ class SyliusClientBuilder implements SyliusClientBuilderInterface
         return [$resourceClient, $pageFactory, $cursorFactory, $fileSystem];
     }
 
-    public function addApi(ApiAwareInterface $api)
+    public function addApi(Api\ApiAwareInterface $api): self
     {
         $this->apiRegistry[(new \ReflectionClass($api))->getShortName()] = $api;
+
+        return $this;
     }
 
-    public function setBaseUri(string $baseUri)
+    public function setBaseUri(string $baseUri): SyliusClientBuilderInterface
     {
         $this->baseUri = $baseUri;
+
+        return $this;
     }
 
-    public function setDefaultHeaders(array $headers)
+    public function setDefaultHeaders(array $headers): SyliusClientBuilderInterface
     {
         $this->defaultHeaders = $headers;
+
+        return $this;
     }
 
     /**
      * Allows to directly set a client instead of using HttpClientDiscovery::find().
      */
-    public function setHttpClient(Client $httpClient)
+    public function setHttpClient(Client $httpClient): SyliusClientBuilderInterface
     {
         $this->httpClient = $httpClient;
+
+        return $this;
     }
 
     /**
      * Allows to directly set a request factory instead of using MessageFactoryDiscovery::find().
      */
-    public function setRequestFactory(RequestFactory $requestFactory)
+    public function setRequestFactory(RequestFactory $requestFactory): SyliusClientBuilderInterface
     {
         $this->requestFactory = $requestFactory;
+
+        return $this;
     }
 
     /**
      * Allows to directly set a stream factory instead of using StreamFactoryDiscovery::find().
      */
-    public function setStreamFactory(StreamFactory $streamFactory)
+    public function setStreamFactory(StreamFactory $streamFactory): SyliusClientBuilderInterface
     {
         $this->streamFactory = $streamFactory;
+
+        return $this;
     }
 
     /**
@@ -207,31 +193,31 @@ class SyliusClientBuilder implements SyliusClientBuilderInterface
         $client = new SyliusClientDecorator(
             new SyliusClient(
                 $authentication,
-                new CartsApi($resourceClient, $pageFactory, $cursorFactory),
-                new ChannelsApi($resourceClient, $pageFactory, $cursorFactory),
-                new CountriesApi($resourceClient, $pageFactory, $cursorFactory),
-                new CurrenciesApi($resourceClient, $pageFactory, $cursorFactory),
-                new CustomersApi($resourceClient, $pageFactory, $cursorFactory),
-                new ExchangeRatesApi($resourceClient, $pageFactory, $cursorFactory),
-                new LocalesApi($resourceClient, $pageFactory, $cursorFactory),
-                new OrdersApi($resourceClient, $pageFactory, $cursorFactory),
-                new PaymentMethodsApi($resourceClient, $pageFactory, $cursorFactory),
-                new PaymentsApi($resourceClient, $pageFactory, $cursorFactory),
-                new ProductsApi($resourceClient, $pageFactory, $cursorFactory),
-                new ProductAttributesApi($resourceClient, $pageFactory, $cursorFactory),
-                new ProductAssociationTypesApi($resourceClient, $pageFactory, $cursorFactory),
-                new ProductOptionsApi($resourceClient, $pageFactory, $cursorFactory),
-                new ProductReviewsApi($resourceClient, $pageFactory, $cursorFactory),
-                new ProductVariantsApi($resourceClient, $pageFactory, $cursorFactory),
-                new PromotionsApi($resourceClient, $pageFactory, $cursorFactory),
-                new PromotionCouponsApi($resourceClient, $pageFactory, $cursorFactory),
-                new ShipmentsApi($resourceClient, $pageFactory, $cursorFactory),
-                new ShippingCategoriesApi($resourceClient, $pageFactory, $cursorFactory),
-                new TaxCategoriesApi($resourceClient, $pageFactory, $cursorFactory),
-                new TaxRatesApi($resourceClient, $pageFactory, $cursorFactory),
-                new TaxonsApi($resourceClient, $pageFactory, $cursorFactory),
-                new UsersApi($resourceClient, $pageFactory, $cursorFactory),
-                new ZonesApi($resourceClient, $pageFactory, $cursorFactory)
+                new Api\CartsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ChannelsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\CountriesApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\CurrenciesApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\CustomersApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ExchangeRatesApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\LocalesApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\OrdersApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\PaymentMethodsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\PaymentsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ProductsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ProductAttributesApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ProductAssociationTypesApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ProductOptionsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ProductReviewsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ProductVariantsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\PromotionsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\PromotionCouponsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ShipmentsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ShippingCategoriesApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\TaxCategoriesApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\TaxRatesApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\TaxonsApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\UsersApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\ZonesApi($resourceClient, $pageFactory, $cursorFactory)
             )
         );
 
