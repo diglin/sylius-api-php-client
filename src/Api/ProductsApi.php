@@ -12,6 +12,7 @@
 namespace Diglin\Sylius\ApiClient\Api;
 
 use Diglin\Sylius\ApiClient\Client\ResourceClientInterface;
+use Diglin\Sylius\ApiClient\Exception\HttpException;
 use Diglin\Sylius\ApiClient\Filter\FilterBuilderInterface;
 use Diglin\Sylius\ApiClient\Pagination\PageFactoryInterface;
 use Diglin\Sylius\ApiClient\Pagination\ResourceCursorFactoryInterface;
@@ -21,8 +22,8 @@ class ProductsApi implements ProductsApiInterface
 {
     use ApiAwareTrait;
 
-    public const ENDPOINT_URI = 'api/v1/products/%s';
-    public const ENDPOINTS_URI = 'api/v1/products';
+    public const ENDPOINT_URI = 'api/v2/admin/products/%s';
+    public const ENDPOINTS_URI = 'api/v2/admin/products';
 
     public function __construct(
         ResourceClientInterface $resourceClient,
@@ -48,6 +49,11 @@ class ProductsApi implements ProductsApiInterface
     public function create($code, array $data = [])
     {
         return $this->resourceClient->createResource(static::ENDPOINTS_URI, [$code], $data);
+    }
+
+    public function upsert($code, array $data = [])
+    {
+        return $this->resourceClient->upsertResource(static::ENDPOINTS_URI, [$code], $data);
     }
 
     /**
