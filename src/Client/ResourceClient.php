@@ -138,7 +138,7 @@ class ResourceClient implements ResourceClientInterface
 
         $uri = $this->uriGenerator->generate($uri, $uriParameters);
         $response = $this->httpClient->sendRequest(
-            'PATCH',
+            'PUT',
             $uri,
             ['Content-Type' => 'application/json'],
             json_encode($body)
