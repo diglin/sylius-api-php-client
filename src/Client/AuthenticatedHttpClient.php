@@ -67,8 +67,7 @@ class AuthenticatedHttpClient implements HttpClientInterface
             );
 
             $this->authentication
-                ->setAccessToken($tokens['access_token'])
-                ->setRefreshToken($tokens['refresh_token'])
+                ->setAccessToken($tokens['token'])
             ;
         }
 
@@ -83,8 +82,7 @@ class AuthenticatedHttpClient implements HttpClientInterface
             );
 
             $this->authentication
-                ->setAccessToken($tokens['access_token'])
-                ->setRefreshToken($tokens['refresh_token'])
+                ->setAccessToken($tokens['token'])
             ;
 
             $headers['Authorization'] = sprintf('Bearer %s', $this->authentication->getAccessToken());

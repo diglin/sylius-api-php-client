@@ -53,7 +53,7 @@ class ProductsApi implements ProductsApiInterface
 
     public function upsert($code, array $data = [])
     {
-        return $this->resourceClient->upsertResource(static::ENDPOINTS_URI, [$code], $data);
+        return $this->resourceClient->upsertResource(static::ENDPOINT_URI, [$code], $data);
     }
 
     /**

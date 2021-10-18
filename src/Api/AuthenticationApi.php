@@ -43,11 +43,8 @@ class AuthenticationApi implements AuthenticationApiInterface
     public function authenticateByPassword($clientId, $secret, $username, $password)
     {
         $requestBody = [
-            'grant_type' => 'password',
-            'username' => $username,
+            'email' => $username,
             'password' => $password,
-            'client_id' => $clientId,
-            'client_secret' => $secret,
         ];
 
         return $this->authenticate($requestBody);
