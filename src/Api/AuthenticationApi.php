@@ -23,7 +23,7 @@ use Diglin\Sylius\ApiClient\Routing\UriGeneratorInterface;
  */
 class AuthenticationApi implements AuthenticationApiInterface
 {
-    public const TOKEN_URI = 'api/oauth/v2/token';
+    public const TOKEN_URI = 'api/v2/admin/authentication-token';
 
     /** @var HttpClient */
     protected $httpClient;
