@@ -11,8 +11,6 @@ class AuthenticationSpec extends ObjectBehavior
         $this->beConstructedThrough('fromPassword', ['client_id', 'secret', 'Julia', 'Julia_pwd']);
         $this->shouldHaveType('Diglin\Sylius\ApiClient\Security\Authentication');
 
-        $this->getClientId()->shouldReturn('client_id');
-        $this->getSecret()->shouldReturn('secret');
         $this->getUsername()->shouldReturn('Julia');
         $this->getPassword()->shouldReturn('Julia_pwd');
         $this->getAccessToken()->shouldReturn(null);
