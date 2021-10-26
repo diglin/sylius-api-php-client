@@ -17,13 +17,13 @@ interface CreatableResourceInterface
     /**
      * Creates a resource.
      *
-     * @param string $code code of the resource to create
-     * @param array  $data data of the resource to create
+     * @param string|int $code code of the resource to create
+     * @param array      $data data of the resource to create
      *
      * @throws HttpException            if the request failed
      * @throws InvalidArgumentException if the parameter "code" is defined in the data parameter
      *
      * @return int status code 201 indicating that the resource has been well created
      */
-    public function create($code, array $data = []);
+    public function create($code, array $data = []): int;
 }

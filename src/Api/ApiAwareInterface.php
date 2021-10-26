@@ -18,11 +18,11 @@ use Diglin\Sylius\ApiClient\Pagination\ResourceCursorFactoryInterface;
 
 interface ApiAwareInterface
 {
-    public function setResourceClient(ResourceClientInterface $resourceClient);
+    public function setResourceClient(ResourceClientInterface $resourceClient): void;
 
-    public function setPageFactory(PageFactoryInterface $pageFactory);
+    public function setPageFactory(PageFactoryInterface $pageFactory): void;
 
-    public function setCursorFactory(ResourceCursorFactoryInterface $cursorFactory);
+    public function setCursorFactory(ResourceCursorFactoryInterface $cursorFactory): void;
 
-    public function setFileSystem(FileSystemInterface $fileSystem);
+    public function setFileSystem(FileSystemInterface $fileSystem): void;
 }

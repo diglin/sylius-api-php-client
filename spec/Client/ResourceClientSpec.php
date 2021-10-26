@@ -105,7 +105,7 @@ class ResourceClientSpec extends ObjectBehavior
             ->willReturn(json_encode($resources))
         ;
 
-        $this->getResources('api/rest/v1/categories', [], 10, ['foo' => 'bar'])->shouldReturn($resources);
+        $this->getResources('api/rest/v1/categories', [], 10, ['foo' => 'bar', 'with_count' => true])->shouldReturn($resources);
     }
 
     public function it_returns_a_list_of_resources_without_limit_and_count(

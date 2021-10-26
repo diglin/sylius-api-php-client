@@ -6,6 +6,7 @@ use Diglin\Sylius\ApiClient\Exception\HttpException;
 use Diglin\Sylius\ApiClient\Exception\InvalidArgumentException;
 use Diglin\Sylius\ApiClient\Filter\FilterBuilderInterface;
 use Diglin\Sylius\ApiClient\Sort\SortBuilderInterface;
+use Diglin\Sylius\ApiClient\Stream\UpsertResourceListResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -21,75 +22,75 @@ interface ResourceClientInterface
     /**
      * Gets a resource.
      *
-     * @param string $uri             URI of the resource
-     * @param array  $uriParameters   URI parameters of the resource
-     * @param array  $queryParameters Query parameters of the request
+     * @param string|\Stringable $uri             URI of the resource
+     * @param array              $uriParameters   URI parameters of the resource
+     * @param array              $queryParameters Query parameters of the request
      *
      * @throws HttpException if the request failed
      *
      * @return array
      */
-    public function getResource($uri, array $uriParameters = [], array $queryParameters = []);
+    public function getResource(string|\Stringable $uri, array $uriParameters = [], array $queryParameters = []): array;
 
     /**
      * Gets a list of resources.
      *
-     * @param string $uri             URI of the resource
-     * @param array  $uriParameters   URI parameters of the resource
-     * @param int    $limit           The maximum number of resources to return.
-     *                                Do note that the server has a default value if you don't specify anything.
-     *                                The server has a maximum limit allowed as well.
-     * @param array  $queryParameters Additional query parameters of the request
+     * @param string|\Stringable $uri             URI of the resource
+     * @param array              $uriParameters   URI parameters of the resource
+     * @param int                $limit           The maximum number of resources to return.
+     *                                            Do note that the server has a default value if you don't specify anything.
+     *                                            The server has a maximum limit allowed as well.
+     * @param array              $queryParameters Additional query parameters of the request
      *
-     * @return array
+     * @return list<array>
      */
-    public function getResources($uri, array $uriParameters = [], $limit = 10, array $queryParameters = [], FilterBuilderInterface $filterBuilder = null, SortBuilderInterface $sortBuilder = null);
+    public function getResources(string|\Stringable $uri, array $uriParameters = [], $limit = 10, array $queryParameters = [], FilterBuilderInterface $filterBuilder = null, SortBuilderInterface $sortBuilder = null): iterable;
 
     /**
      * Creates a resource.
      *
-     * @param string $uri           URI of the resource
-     * @param array  $uriParameters URI parameters of the resource
-     * @param array  $body          Body of the request
+     * @param string|\Stringable $uri           URI of the resource
+     * @param array              $uriParameters URI parameters of the resource
+     * @param array              $body          Body of the request
      *
      * @throws HttpException if the request failed
      *
      * @return int status code 201 indicating that the resource has been well created
      */
-    public function createResource($uri, array $uriParameters = [], array $body = []);
+    public function createResource(string|\Stringable $uri, array $uriParameters = [], array $body = []): int;
 
     /**
      * Creates a resource using a multipart request.
      *
-     * @param string $uri           URI of the resource
-     * @param array  $uriParameters URI parameters of the resources
-     * @param array  $requestParts  Parts of the request. Each part is defined with "name", "contents", and "options"
+     * @param string|\Stringable $uri URI of the resource
+     * @param array  $uriParameters   URI parameters of the resources
+     * @param array  $requestParts    Parts of the request. Each part is defined with "name", "contents", and "options"
      *
      * @throws InvalidArgumentException if a given request part is invalid
      * @throws HttpException            if the request failed
      *
      * @return ResponseInterface the response of the creation request
      */
-    public function createMultipartResource($uri, array $uriParameters = [], array $requestParts = []);
+    public function createMultipartResource(string|\Stringable $uri, array $uriParameters = [], array $requestParts = []): ResponseInterface;
 
     /**
      * Creates a resource if it does not exist yet, otherwise updates partially the resource.
      *
-     * @param string $uri           URI of the resource
-     * @param array  $uriParameters URI parameters of the resource
-     * @param array  $body          Body of the request
+     * @param string|\Stringable $uri URI of the resource
+     * @param array  $uriParameters   URI parameters of the resource
+     * @param array  $body            Body of the request
      *
      * @throws HttpException if the request failed
      *
      * @return int Status code 201 indicating that the resource has been well created.
      *             Status code 204 indicating that the resource has been well updated.
      */
-    public function upsertResource($uri, array $uriParameters = [], array $body = []);
+    public function upsertResource(string|\Stringable $uri, array $uriParameters = [], array $body = []): int;
 
     /**
      * Updates or creates several resources.
      *
-     * @param string                $uri           URI of the resource
+     * @param string|\Stringable    $uri           URI of the resource
      * @param array                 $uriParameters URI parameters of the resource
      * @param array|StreamInterface $resources     array of resources to create or update.
      *                                             You can pass your own StreamInterface implementation as well.
@@ -97,31 +98,60 @@ interface ResourceClientInterface
      * @throws HttpException            if the request failed
      * @throws InvalidArgumentException if the resources or any part thereof are invalid
      *
-     * @return \Traversable returns an iterable object, each entry corresponding to the response of the upserted resource
+     * @return UpsertResourceListResponse returns an iterable object, each entry corresponding to the response of the upserted resource
      */
-    public function upsertResourceList($uri, array $uriParameters = [], $resources = []);
+    public function upsertResourceList(string|\Stringable $uri, array $uriParameters = [], array|StreamInterface $resources = []): UpsertResourceListResponse;
+
+    /**
+     * Updates partially the resource.
+     *
+     * @param string|\Stringable $uri URI of the resource
+     * @param array  $uriParameters   URI parameters of the resource
+     * @param array  $body            Body of the request
+     *
+     * @throws HttpException if the request failed
+     *
+     * @return int Status code 201 indicating that the resource has been well created.
+     *             Status code 204 indicating that the resource has been well updated.
+     */
+    public function patchResource(string|\Stringable $uri, array $uriParameters = [], array $body = []): int;
+
+    /**
+     * Updates partially several resources.
+     *
+     * @param string|\Stringable    $uri           URI of the resource
+     * @param array                 $uriParameters URI parameters of the resource
+     * @param array|StreamInterface $resources     array of resources to create or update.
+     *                                             You can pass your own StreamInterface implementation as well.
+     *
+     * @throws HttpException            if the request failed
+     * @throws InvalidArgumentException if the resources or any part thereof are invalid
+     *
+     * @return PatchResourceListResponse returns an iterable object, each entry corresponding to the response of the upserted resource
+     */
+    public function patchResourceList(string|\Stringable $uri, array $uriParameters = [], array|StreamInterface $resources = []): PatchResourceListResponse;
 
     /**
      * Deletes a resource.
      *
-     * @param string $uri           URI of the resource to delete
-     * @param array  $uriParameters URI parameters of the resource
+     * @param string|\Stringable $uri URI of the resource to delete
+     * @param array  $uriParameters   URI parameters of the resource
      *
      * @throws HttpException If the request failed
      *
      * @return int Status code 204 indicating that the resource has been well deleted
      */
-    public function deleteResource($uri, array $uriParameters = []);
+    public function deleteResource(string|\Stringable $uri, array $uriParameters = []): int;
 
     /**
      * Gets a streamed resource.
      *
-     * @param string $uri           URI of the resource
-     * @param array  $uriParameters URI parameters of the resource
+     * @param string|\Stringable $uri URI of the resource
+     * @param array  $uriParameters   URI parameters of the resource
      *
      * @throws HttpException If the request failed
      *
      * @return StreamInterface
      */
-    public function getStreamedResource($uri, array $uriParameters = []);
+    public function getStreamedResource(string|\Stringable $uri, array $uriParameters = []): StreamInterface;
 }

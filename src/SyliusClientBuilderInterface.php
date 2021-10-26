@@ -1,43 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
+use Diglin\Sylius\ApiClient;
+
+trigger_deprecation('diglin/sylius-api-php-client', '2.0', 'The "%s" interface is deprecated, use "%s" instead.', 'Diglin\\Sylius\\ApiClient\\SyliusClientBuilderInterface', ApiClient\SyliusLegacyClientInterface::class);
+
 /**
- * Diglin GmbH - Switzerland.
- *
- * @author      Sylvain Rayé <support at diglin.com>
- * @category    FWG OroCRM
- * @copyright   2020 - Diglin (https://www.diglin.com)
+ * @deprecated since diglin/sylius-api-php-client 2.0, use Diglin\Sylius\ApiClient\ApiClient\SyliusLegacyClientBuilderInterface instead.
  */
-
-namespace Diglin\Sylius\ApiClient;
-
-use Http\Client\HttpClient as Client;
-use Http\Message\RequestFactory;
-use Http\Message\StreamFactory;
-
-interface SyliusClientBuilderInterface
-{
-    public function setBaseUri(string $baseUri): self;
-
-    public function setDefaultHeaders(array $headers): self;
-
-    public function setHttpClient(Client $httpClient): self;
-
-    public function setRequestFactory(RequestFactory $requestFactory): self;
-
-    public function setStreamFactory(StreamFactory $streamFactory): self;
-
-    public function buildAuthenticatedByPassword(
-        string $clientId,
-        string $secret,
-        string $username,
-        string $password
-    ): SyliusClientInterface;
-
-    public function buildAuthenticatedByToken(
-        string $clientId,
-        string $secret,
-        string $token,
-        string $refreshToken
-    ): SyliusClientInterface;
-
-    public function buildAuthenticatedByHeader(array $xAuthToken): SyliusClientInterface;
-}
+class_alias(ApiClient\SyliusLegacyClientBuilderInterface::class, 'Diglin\\Sylius\\ApiClient\\SyliusClientBuilderInterface');

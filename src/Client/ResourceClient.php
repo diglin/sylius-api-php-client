@@ -7,7 +7,9 @@ use Diglin\Sylius\ApiClient\Filter\FilterBuilderInterface;
 use Diglin\Sylius\ApiClient\Routing\UriGeneratorInterface;
 use Diglin\Sylius\ApiClient\Sort\SortBuilderInterface;
 use Diglin\Sylius\ApiClient\Stream\MultipartStreamBuilderFactory;
+use Diglin\Sylius\ApiClient\Stream\UpsertResourceListResponse;
 use Diglin\Sylius\ApiClient\Stream\UpsertResourceListResponseFactory;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -19,41 +21,21 @@ use Psr\Http\Message\StreamInterface;
  */
 class ResourceClient implements ResourceClientInterface
 {
-    /** @var HttpClientInterface */
-    protected $httpClient;
-
-    /** @var UriGeneratorInterface */
-    protected $uriGenerator;
-
-    /** @var MultipartStreamBuilderFactory */
-    protected $multipartStreamBuilderFactory;
-
-    /** @var UpsertResourceListResponseFactory */
-    protected $upsertListResponseFactory;
-
     public function __construct(
-        HttpClientInterface $httpClient,
-        UriGeneratorInterface $uriGenerator,
-        MultipartStreamBuilderFactory $multipartStreamBuilderFactory,
-        UpsertResourceListResponseFactory $upsertListResponseFactory
-    ) {
-        $this->httpClient = $httpClient;
-        $this->uriGenerator = $uriGenerator;
-        $this->multipartStreamBuilderFactory = $multipartStreamBuilderFactory;
-        $this->upsertListResponseFactory = $upsertListResponseFactory;
-    }
+        private HttpClientInterface $httpClient,
+        private UriGeneratorInterface $uriGenerator,
+        private MultipartStreamBuilderFactory $multipartStreamBuilderFactory,
+        private UpsertResourceListResponseFactory $upsertListResponseFactory
+    ) {}
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResources(
-        $uri,
+        string|\Stringable $uri,
         array $uriParameters = [],
         $limit = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
-    ) {
+    ): iterable {
         if (array_key_exists('limit', $queryParameters)) {
             throw new InvalidArgumentException('The parameter "limit" should not be defined in the additional query parameters');
         }
@@ -73,25 +55,22 @@ class ResourceClient implements ResourceClientInterface
         return $this->getResource($uri, $uriParameters, $queryParameters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResource(
-        $uri,
+        string|\Stringable $uri,
         array $uriParameters = [],
         array $queryParameters = []
-    ) {
+    ): array {
         $uri = $this->uriGenerator->generate($uri, $uriParameters, $queryParameters);
         $response = $this->httpClient->sendRequest('GET', $uri, ['Accept' => '*/*']);
 
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createResource($uri, array $uriParameters = [], array $body = [])
-    {
+    public function createResource(
+        string|\Stringable$uri,
+        array $uriParameters = [],
+        array $body = []
+    ): int {
         unset($body['_links']);
 
         $uri = $this->uriGenerator->generate($uri, $uriParameters);
@@ -105,11 +84,11 @@ class ResourceClient implements ResourceClientInterface
         return $response->getStatusCode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createMultipartResource($uri, array $uriParameters = [], array $requestParts = [])
-    {
+    public function createMultipartResource(
+        string|\Stringable $uri,
+        array $uriParameters = [],
+        array $requestParts = []
+    ): ResponseInterface {
         $streamBuilder = $this->multipartStreamBuilderFactory->create();
 
         foreach ($requestParts as $requestPart) {
@@ -129,11 +108,11 @@ class ResourceClient implements ResourceClientInterface
         return $this->httpClient->sendRequest('POST', $uri, $headers, $multipartStream);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function upsertResource($uri, array $uriParameters = [], array $body = [])
-    {
+    public function upsertResource(
+        string|\Stringable $uri,
+        array $uriParameters = [],
+        array $body = []
+    ): int {
         unset($body['_links']);
 
         $uri = $this->uriGenerator->generate($uri, $uriParameters);
@@ -147,11 +126,11 @@ class ResourceClient implements ResourceClientInterface
         return $response->getStatusCode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function upsertResourceList($uri, array $uriParameters = [], $resources = [])
-    {
+    public function upsertResourceList(
+        string|\Stringable $uri,
+        array $uriParameters = [],
+        array|StreamInterface $resources = []
+    ): UpsertResourceListResponse {
         if (!is_array($resources) && !$resources instanceof StreamInterface) {
             throw new InvalidArgumentException('The parameter "resources" must be an array or an instance of StreamInterface.');
         }
@@ -182,11 +161,63 @@ class ResourceClient implements ResourceClientInterface
         return $this->upsertListResponseFactory->create($response->getBody());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteResource($uri, array $uriParameters = [])
-    {
+    public function patchResource(
+        string|\Stringable $uri,
+        array $uriParameters = [],
+        array $body = []
+    ): int {
+        unset($body['_links']);
+
+        $uri = $this->uriGenerator->generate($uri, $uriParameters);
+        $response = $this->httpClient->sendRequest(
+            'PATCH',
+            $uri,
+            ['Content-Type' => 'application/json'],
+            json_encode($body)
+        );
+
+        return $response->getStatusCode();
+    }
+
+    public function patchResourceList(
+        string|\Stringable $uri,
+        array $uriParameters = [],
+        array|StreamInterface $resources = []
+    ): PatchResourceListResponse {
+        if (!is_array($resources) && !$resources instanceof StreamInterface) {
+            throw new InvalidArgumentException('The parameter "resources" must be an array or an instance of StreamInterface.');
+        }
+
+        if (is_array($resources)) {
+            $body = '';
+            $isFirstLine = true;
+            foreach ($resources as $resource) {
+                if (!is_array($resource)) {
+                    throw new InvalidArgumentException('The parameter "resources" must be an array of array.');
+                }
+                unset($resource['_links']);
+                $body .= ($isFirstLine ? '' : PHP_EOL).json_encode($resource);
+                $isFirstLine = false;
+            }
+        } else {
+            $body = $resources;
+        }
+
+        $uri = $this->uriGenerator->generate($uri, $uriParameters);
+        $response = $this->httpClient->sendRequest(
+            'PATCH',
+            $uri,
+            ['Content-Type' => 'application/json'],
+            $body
+        );
+
+        return $this->upsertListResponseFactory->create($response->getBody());
+    }
+
+    public function deleteResource(
+        string|\Stringable $uri,
+        array $uriParameters = []
+    ): int {
         $uri = $this->uriGenerator->generate($uri, $uriParameters);
 
         $response = $this->httpClient->sendRequest('DELETE', $uri);
@@ -194,11 +225,10 @@ class ResourceClient implements ResourceClientInterface
         return $response->getStatusCode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStreamedResource($uri, array $uriParameters = [])
-    {
+    public function getStreamedResource(
+        string|\Stringable $uri,
+        array $uriParameters = []
+    ): StreamInterface {
         $uri = $this->uriGenerator->generate($uri, $uriParameters);
         $response = $this->httpClient->sendRequest('GET', $uri, ['Accept' => '*/*']);
 

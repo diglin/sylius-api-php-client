@@ -14,7 +14,7 @@ interface ListableDoubleResourceInterface
      * Gets a list of resources by returning the first page.
      * Consequently, this method does not return all the resources.
      *
-     * @param mixed $code            code of the parent resource
+     * @param string|int $code       code of the parent resource
      * @param int   $limit           The maximum number of resources to return.
      *                               Do note that the server has a maximum limit allowed.
      * @param array $queryParameters additional query parameters to pass in the request
@@ -24,28 +24,28 @@ interface ListableDoubleResourceInterface
      * @return PageInterface
      */
     public function listPerPage(
-        string $code,
-        $limit = 10,
+        $code,
+        int $limit = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
-    );
+    ): PageInterface;
 
     /**
      * Gets a cursor to iterate over a list of resources.
      *
-     * @param mixed $code            code of the parent resource
-     * @param int   $pageSize        The size of the page returned by the server.
-     *                               Do note that the server has a maximum limit allowed.
-     * @param array $queryParameters Additional query parameters to pass in the request
+     * @param string|int $code            code of the parent resource
+     * @param int        $pageSize        The size of the page returned by the server.
+     *                                    Do note that the server has a maximum limit allowed.
+     * @param array      $queryParameters Additional query parameters to pass in the request
      *
      * @return ResourceCursorInterface
      */
     public function all(
-        string $code,
-        $pageSize = 10,
+        $code,
+        int $pageSize = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
-    );
+    ): ResourceCursorInterface;
 }

@@ -6,13 +6,14 @@ use Diglin\Sylius\ApiClient\Client\HttpClientInterface;
 use Diglin\Sylius\ApiClient\Pagination\Page;
 use Diglin\Sylius\ApiClient\Pagination\PageFactory;
 use Diglin\Sylius\ApiClient\Pagination\PageFactoryInterface;
+use Diglin\Sylius\ApiClient\Routing\UriGeneratorInterface;
 use PhpSpec\ObjectBehavior;
 
 class PageFactorySpec extends ObjectBehavior
 {
-    public function let(HttpClientInterface $httpClient)
+    public function let(HttpClientInterface $httpClient, UriGeneratorInterface $uriGenerator)
     {
-        $this->beConstructedWith($httpClient);
+        $this->beConstructedWith($httpClient, $uriGenerator);
     }
 
     public function it_is_initializable()
@@ -21,7 +22,7 @@ class PageFactorySpec extends ObjectBehavior
         $this->shouldImplement(PageFactoryInterface::class);
     }
 
-    public function it_creates_a_page_with_all_links($httpClient)
+    public function it_creates_a_page_with_all_links($httpClient, $uriGenerator)
     {
         $data = [
             '_links' => [
@@ -50,7 +51,7 @@ class PageFactorySpec extends ObjectBehavior
         $this->createPage($data)->shouldReturnAnInstanceOf(Page::class);
         $this->createPage($data)->shouldBeLike(
             new Page(
-                new PageFactory($httpClient->getWrappedObject()),
+                new PageFactory($httpClient->getWrappedObject(), $uriGenerator->getWrappedObject()),
                 $httpClient->getWrappedObject(),
                 'http://diglin.com/first',
                 'http://diglin.com/previous',
@@ -64,7 +65,7 @@ class PageFactorySpec extends ObjectBehavior
         );
     }
 
-    public function it_creates_a_page_without_next_and_previous_links($httpClient)
+    public function it_creates_a_page_without_next_and_previous_links($httpClient, $uriGenerator)
     {
         $data = [
             '_links' => [
@@ -87,7 +88,7 @@ class PageFactorySpec extends ObjectBehavior
         $this->createPage($data)->shouldReturnAnInstanceOf(Page::class);
         $this->createPage($data)->shouldBeLike(
             new Page(
-                new PageFactory($httpClient->getWrappedObject()),
+                new PageFactory($httpClient->getWrappedObject(), $uriGenerator->getWrappedObject()),
                 $httpClient->getWrappedObject(),
                 'http://diglin.com/first',
                 null,
@@ -101,7 +102,7 @@ class PageFactorySpec extends ObjectBehavior
         );
     }
 
-    public function it_creates_a_page_without_count($httpClient)
+    public function it_creates_a_page_without_count($httpClient, $uriGenerator)
     {
         $data = [
             '_links' => [
@@ -129,7 +130,7 @@ class PageFactorySpec extends ObjectBehavior
         $this->createPage($data)->shouldReturnAnInstanceOf(Page::class);
         $this->createPage($data)->shouldBeLike(
             new Page(
-                new PageFactory($httpClient->getWrappedObject()),
+                new PageFactory($httpClient->getWrappedObject(), $uriGenerator->getWrappedObject()),
                 $httpClient->getWrappedObject(),
                 'http://diglin.com/first',
                 'http://diglin.com/previous',

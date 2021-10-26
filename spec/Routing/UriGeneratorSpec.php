@@ -85,7 +85,7 @@ class UriGeneratorSpec extends ObjectBehavior
 
         $this
             ->generate('/api', [], $queryParameters)
-            ->shouldReturn(static::BASE_URI.'api?search=%7B%22categories%22%3A%5B%7B%22operator%22%3A%22IN%22%2C%22value%22%3A%22master%22%7D%5D%7D')
+            ->shouldReturn(static::BASE_URI.'api?search%5Bcategories%5D%5B0%5D%5Boperator%5D=IN&search%5Bcategories%5D%5B0%5D%5Bvalue%5D=master')
         ;
     }
 }

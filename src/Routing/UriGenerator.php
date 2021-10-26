@@ -25,11 +25,11 @@ class UriGenerator implements UriGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate($path, array $uriParameters = [], array $queryParameters = [])
+    public function generate(string|\Stringable $path, array $uriParameters = [], array $queryParameters = [])
     {
         $uriParameters = $this->encodeUriParameters($uriParameters);
 
-        $uri = $this->baseUri.'/'.vsprintf(ltrim($path, '/'), $uriParameters);
+        $uri = $this->baseUri.'/'.sprintf(ltrim((string) $path, '/'), ...$uriParameters);
 
         $queryParameters = $this->booleanQueryParametersAsString($queryParameters);
 
