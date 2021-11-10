@@ -12,39 +12,13 @@
 namespace Diglin\Sylius\ApiClient;
 
 use Diglin\Sylius\ApiClient\Api\ApiAwareInterface;
-use Diglin\Sylius\ApiClient\Api\CartsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ChannelsApiInterface;
-use Diglin\Sylius\ApiClient\Api\CountriesApiInterface;
-use Diglin\Sylius\ApiClient\Api\CurrenciesApiInterface;
-use Diglin\Sylius\ApiClient\Api\CustomersApiInterface;
-use Diglin\Sylius\ApiClient\Api\ExchangeRatesApiInterface;
-use Diglin\Sylius\ApiClient\Api\LocalesApiInterface;
-use Diglin\Sylius\ApiClient\Api\OrdersApiInterface;
-use Diglin\Sylius\ApiClient\Api\PaymentMethodsApiInterface;
-use Diglin\Sylius\ApiClient\Api\PaymentsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductAssociationTypesApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductAttributesApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductOptionsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductReviewsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ProductVariantsApiInterface;
-use Diglin\Sylius\ApiClient\Api\PromotionCouponsApiInterface;
-use Diglin\Sylius\ApiClient\Api\PromotionsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ShipmentsApiInterface;
-use Diglin\Sylius\ApiClient\Api\ShippingCategoriesApi;
-use Diglin\Sylius\ApiClient\Api\TaxCategoriesApiInterface;
-use Diglin\Sylius\ApiClient\Api\TaxonsApiInterface;
-use Diglin\Sylius\ApiClient\Api\TaxRatesApiInterface;
-use Diglin\Sylius\ApiClient\Api\UsersApiInterface;
-use Diglin\Sylius\ApiClient\Api\ZonesApiInterface;
+use Diglin\Sylius\ApiClient\Api\Legacy AS Api;
 
 class SyliusLegacyClientDecorator implements SyliusLegacyClientInterface
 {
-    /** @var SyliusLegacyClientInterface */
-    protected $decoratedClient;
-
-    /** @var ApiAwareInterface[] */
-    protected $apiRegistry = [];
+    private SyliusLegacyClientInterface $decoratedClient;
+    /** @var list<ApiAwareInterface> */
+    private array $apiRegistry = [];
 
     public function __construct(
         SyliusLegacyClientInterface $decoratedClient
@@ -82,127 +56,127 @@ class SyliusLegacyClientDecorator implements SyliusLegacyClientInterface
         return $this->decoratedClient->getRefreshToken();
     }
 
-    public function getChannelsApi(): ChannelsApiInterface
+    public function getChannelsApi(): Api\ChannelsApiInterface
     {
         return $this->decoratedClient->getChannelsApi();
     }
 
-    public function getShippingCategoriesApi(): ShippingCategoriesApi
+    public function getShippingCategoriesApi(): Api\ShippingCategoriesApiInterface
     {
         return $this->decoratedClient->getShippingCategoriesApi();
     }
 
-    public function getLocalesApi(): LocalesApiInterface
+    public function getLocalesApi(): Api\LocalesApiInterface
     {
         return $this->decoratedClient->getLocalesApi();
     }
 
-    public function getCurrenciesApi(): CurrenciesApiInterface
+    public function getCurrenciesApi(): Api\CurrenciesApiInterface
     {
         return $this->decoratedClient->getCurrenciesApi();
     }
 
-    public function getCountriesApi(): CountriesApiInterface
+    public function getCountriesApi(): Api\CountriesApiInterface
     {
         return $this->decoratedClient->getCountriesApi();
     }
 
-    public function getExchangeRatesApi(): ExchangeRatesApiInterface
+    public function getExchangeRatesApi(): Api\ExchangeRatesApiInterface
     {
         return $this->decoratedClient->getExchangeRatesApi();
     }
 
-    public function getPaymentMethodsApi(): PaymentMethodsApiInterface
+    public function getPaymentMethodsApi(): Api\PaymentMethodsApiInterface
     {
         return $this->decoratedClient->getPaymentMethodsApi();
     }
 
-    public function getUsersApi(): UsersApiInterface
+    public function getUsersApi(): Api\UsersApiInterface
     {
         return $this->decoratedClient->getUsersApi();
     }
 
-    public function getCustomersApi(): CustomersApiInterface
+    public function getCustomersApi(): Api\CustomersApiInterface
     {
         return $this->decoratedClient->getCustomersApi();
     }
 
-    public function getProductsApi(): ProductsApiInterface
+    public function getProductsApi(): Api\ProductsApiInterface
     {
         return $this->decoratedClient->getProductsApi();
     }
 
-    public function getProductAttributesApi(): ProductAttributesApiInterface
+    public function getProductAttributesApi(): Api\ProductAttributesApiInterface
     {
         return $this->decoratedClient->getProductAttributesApi();
     }
 
-    public function getProductAssociationTypesApi(): ProductAssociationTypesApiInterface
+    public function getProductAssociationTypesApi(): Api\ProductAssociationTypesApiInterface
     {
         return $this->decoratedClient->getProductAssociationTypesApi();
     }
 
-    public function getProductOptionsApi(): ProductOptionsApiInterface
+    public function getProductOptionsApi(): Api\ProductOptionsApiInterface
     {
         return $this->decoratedClient->getProductOptionsApi();
     }
 
-    public function getProductReviewsApi(): ProductReviewsApiInterface
+    public function getProductReviewsApi(): Api\ProductReviewsApiInterface
     {
         return $this->decoratedClient->getProductReviewsApi();
     }
 
-    public function getProductVariantsApi(): ProductVariantsApiInterface
+    public function getProductVariantsApi(): Api\ProductVariantsApiInterface
     {
         return $this->decoratedClient->getProductVariantsApi();
     }
 
-    public function getPromotionsApi(): PromotionsApiInterface
+    public function getPromotionsApi(): Api\PromotionsApiInterface
     {
         return $this->decoratedClient->getPromotionsApi();
     }
 
-    public function getPromotionCouponsApi(): PromotionCouponsApiInterface
+    public function getPromotionCouponsApi(): Api\PromotionCouponsApiInterface
     {
         return $this->decoratedClient->getPromotionCouponsApi();
     }
 
-    public function getCartsApi(): CartsApiInterface
+    public function getCartsApi(): Api\CartsApiInterface
     {
         return $this->decoratedClient->getCartsApi();
     }
 
-    public function getOrdersApi(): OrdersApiInterface
+    public function getOrdersApi(): Api\OrdersApiInterface
     {
         return $this->decoratedClient->getOrdersApi();
     }
 
-    public function getPaymentsApi(): PaymentsApiInterface
+    public function getPaymentsApi(): Api\PaymentsApiInterface
     {
         return $this->decoratedClient->getPaymentsApi();
     }
 
-    public function getShipmentsApi(): ShipmentsApiInterface
+    public function getShipmentsApi(): Api\ShipmentsApiInterface
     {
         return $this->decoratedClient->getShipmentsApi();
     }
 
-    public function getTaxCategoriesApi(): TaxCategoriesApiInterface
+    public function getTaxCategoriesApi(): Api\TaxCategoriesApiInterface
     {
         return $this->decoratedClient->getTaxCategoriesApi();
     }
 
-    public function getTaxRatesApi(): TaxRatesApiInterface
+    public function getTaxRatesApi(): Api\TaxRatesApiInterface
     {
         return $this->decoratedClient->getTaxRatesApi();
     }
 
-    public function getTaxonsApi(): TaxonsApiInterface
+    public function getTaxonsApi(): Api\TaxonsApiInterface
     {
         return $this->decoratedClient->getTaxonsApi();
     }
 
-    public function getZonesApi(): ZonesApiInterface
+    public function getZonesApi(): Api\ZonesApiInterface
     {
         return $this->decoratedClient->getZonesApi();
     }

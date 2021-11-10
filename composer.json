@@ -11,6 +11,10 @@
     {
       "name": "Diglin (Derivative Work)",
       "homepage": "https://www.diglin.com"
+    },
+    {
+      "name": "Gyroscops (Derivative Work)",
+      "homepage": "https://gyroscops.com"
     }
   ],
   "autoload": {
@@ -25,7 +29,7 @@
     }
   },
   "require": {
-    "php": ">=7.1",
+    "php": ">=8.0",
     "psr/http-client": "^1.0",
     "psr/http-message": "^1.0",
     "php-http/httplug": "^1.1 || ^2.0",
