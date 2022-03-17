@@ -6,6 +6,7 @@ use Diglin\Sylius\ApiClient\Exception\HttpException;
 use Diglin\Sylius\ApiClient\Exception\InvalidArgumentException;
 use Diglin\Sylius\ApiClient\Filter\FilterBuilderInterface;
 use Diglin\Sylius\ApiClient\Sort\SortBuilderInterface;
+use Diglin\Sylius\ApiClient\Stream\PatchResourceListResponse;
 use Diglin\Sylius\ApiClient\Stream\UpsertResourceListResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -130,6 +131,20 @@ interface ResourceClientInterface
      * @return PatchResourceListResponse returns an iterable object, each entry corresponding to the response of the upserted resource
      */
     public function patchResourceList(string|\Stringable $uri, array $uriParameters = [], array|StreamInterface $resources = []): PatchResourceListResponse;
+
+    /**
+     * Updates partially the resource.
+     *
+     * @param string|\Stringable $uri URI of the resource
+     * @param array  $uriParameters   URI parameters of the resource
+     * @param array  $body            Body of the request
+     *
+     * @throws HttpException if the request failed
+     *
+     * @return int Status code 201 indicating that the resource has been well created.
+     *             Status code 204 indicating that the resource has been well updated.
+     */
+    public function putResource(string|\Stringable $uri, array $uriParameters = [], array $body = []): int;
 
     /**
      * Deletes a resource.

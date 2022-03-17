@@ -7,6 +7,8 @@ use Diglin\Sylius\ApiClient\Filter\FilterBuilderInterface;
 use Diglin\Sylius\ApiClient\Routing\UriGeneratorInterface;
 use Diglin\Sylius\ApiClient\Sort\SortBuilderInterface;
 use Diglin\Sylius\ApiClient\Stream\MultipartStreamBuilderFactory;
+use Diglin\Sylius\ApiClient\Stream\PatchResourceListResponse;
+use Diglin\Sylius\ApiClient\Stream\PatchResourceListResponseFactory;
 use Diglin\Sylius\ApiClient\Stream\UpsertResourceListResponse;
 use Diglin\Sylius\ApiClient\Stream\UpsertResourceListResponseFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -25,7 +27,8 @@ class ResourceClient implements ResourceClientInterface
         private HttpClientInterface $httpClient,
         private UriGeneratorInterface $uriGenerator,
         private MultipartStreamBuilderFactory $multipartStreamBuilderFactory,
-        private UpsertResourceListResponseFactory $upsertListResponseFactory
+        private UpsertResourceListResponseFactory $upsertListResponseFactory,
+        private PatchResourceListResponseFactory $patchListResponseFactory
     ) {}
 
     public function getResources(
@@ -211,7 +214,25 @@ class ResourceClient implements ResourceClientInterface
             $body
         );
 
-        return $this->upsertListResponseFactory->create($response->getBody());
+        return $this->patchListResponseFactory->create($response->getBody());
+    }
+
+    public function putResource(
+        string|\Stringable $uri,
+        array $uriParameters = [],
+        array $body = []
+    ): int {
+        unset($body['_links']);
+
+        $uri = $this->uriGenerator->generate($uri, $uriParameters);
+        $response = $this->httpClient->sendRequest(
+            'PUT',
+            $uri,
+            ['Content-Type' => 'application/json'],
+            json_encode($body)
+        );
+
+        return $response->getStatusCode();
     }
 
     public function deleteResource(
