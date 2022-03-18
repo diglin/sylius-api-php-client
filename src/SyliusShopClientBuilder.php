@@ -139,6 +139,12 @@ class SyliusShopClientBuilder implements SyliusShopClientBuilderInterface
                 new Api\Shop\AdjustmentApi($resourceClient, $pageFactory, $cursorFactory),
                 new Api\Shop\ChannelApi($resourceClient),
                 new Api\Shop\CountryApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\CurrencyApi($resourceClient),
+                new Api\Shop\CustomerApi($resourceClient),
+                new Api\Shop\LocaleApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\OrderItemUnitApi($resourceClient),
+                new Api\Shop\OrderItemApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\OrderApi($resourceClient, $pageFactory, $cursorFactory),
             )
         );
 

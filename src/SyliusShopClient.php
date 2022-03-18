@@ -14,6 +14,12 @@ class SyliusShopClient implements SyliusShopClientInterface
         private Api\Shop\AdjustmentApiInterface $adjustmentApi,
         private Api\Shop\ChannelApiInterface $channelApi,
         private Api\Shop\CountryApiInterface $countryApi,
+        private Api\Shop\CurrencyApiInterface $currencyApi,
+        private Api\Shop\CustomerApiInterface $customerApi,
+        private Api\Shop\LocaleApiInterface $localeApi,
+        private Api\Shop\OrderItemUnitApiInterface $orderItemUnitApi,
+        private Api\Shop\OrderItemApiInterface $orderItemApi,
+        private Api\Shop\OrderApiInterface $orderApi,
     ) {}
 
     public function getAddressApi(): Api\Shop\AddressApiInterface
@@ -34,5 +40,35 @@ class SyliusShopClient implements SyliusShopClientInterface
     public function getCountryApi(): Api\Shop\CountryApiInterface
     {
         return $this->countryApi;
+    }
+
+    public function getCurrencyApi(): Api\Shop\CurrencyApiInterface
+    {
+        return $this->currencyApi;
+    }
+
+    public function getCustomerApi(): Api\Shop\CustomerApiInterface
+    {
+        return $this->customerApi;
+    }
+
+    public function getLocaleApi(): Api\Shop\LocaleApiInterface
+    {
+        return $this->localeApi;
+    }
+
+    public function getOrderItemUnitApi(): Api\Shop\OrderItemUnitApiInterface
+    {
+        return $this->orderItemUnitApi;
+    }
+
+    public function getOrderItemApi(): Api\Shop\OrderItemApiInterface
+    {
+        return $this->orderItemApi;
+    }
+
+    public function getOrderApi(): Api\Shop\OrderApiInterface
+    {
+        return $this->orderApi;
     }
 }
