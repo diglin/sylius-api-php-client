@@ -2,6 +2,9 @@
 
 namespace Diglin\Sylius\ApiClient\Api\Shop;
 
-interface ShipmentApiInterface
+use Diglin\Sylius\ApiClient\Api\Operation\GettableResourceInterface;
+use Diglin\Sylius\ApiClient\Api\Operation\ListableResourceInterface;
+
+interface ShipmentApiInterface extends GettableResourceInterface, ListableResourceInterface
 {
 }

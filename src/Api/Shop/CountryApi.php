@@ -11,7 +11,7 @@ use Diglin\Sylius\ApiClient\Pagination\ResourceCursorInterface;
 use Diglin\Sylius\ApiClient\Sort\SortBuilderInterface;
 use Webmozart\Assert\Assert;
 
-class CountryApi implements CountryApiInterface
+final class CountryApi implements CountryApiInterface
 {
     public function __construct(
         private ResourceClientInterface $resourceClient,

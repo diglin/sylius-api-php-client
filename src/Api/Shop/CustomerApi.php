@@ -12,7 +12,7 @@ use Diglin\Sylius\ApiClient\Pagination\ResourceCursorInterface;
 use Diglin\Sylius\ApiClient\Sort\SortBuilderInterface;
 use Webmozart\Assert\Assert;
 
-class CustomerApi implements CustomerApiInterface
+final class CustomerApi implements CustomerApiInterface
 {
     public function __construct(
         private ResourceClientInterface $resourceClient,

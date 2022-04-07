@@ -11,7 +11,7 @@ use Diglin\Sylius\ApiClient\Pagination\ResourceCursorInterface;
 use Diglin\Sylius\ApiClient\Sort\SortBuilderInterface;
 use Webmozart\Assert\Assert;
 
-class OrderItemApi implements OrderItemApiInterface
+final class OrderItemApi implements OrderItemApiInterface
 {
     public function __construct(
         private ResourceClientInterface $resourceClient,

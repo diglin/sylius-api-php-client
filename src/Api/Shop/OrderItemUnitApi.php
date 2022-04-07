@@ -5,7 +5,7 @@ namespace Diglin\Sylius\ApiClient\Api\Shop;
 use Diglin\Sylius\ApiClient\Client\ResourceClientInterface;
 use Webmozart\Assert\Assert;
 
-class OrderItemUnitApi implements OrderItemUnitApiInterface
+final class OrderItemUnitApi implements OrderItemUnitApiInterface
 {
     public function __construct(
         private ResourceClientInterface $resourceClient,

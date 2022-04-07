@@ -11,7 +11,7 @@ use Diglin\Sylius\ApiClient\Pagination\ResourceCursorInterface;
 use Diglin\Sylius\ApiClient\Sort\SortBuilderInterface;
 use Webmozart\Assert\Assert;
 
-class CurrencyApi implements CurrencyApiInterface
+final class CurrencyApi implements CurrencyApiInterface
 {
     public function __construct(
         private ResourceClientInterface $resourceClient,

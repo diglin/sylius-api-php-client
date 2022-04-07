@@ -3,7 +3,6 @@
 namespace Diglin\Sylius\ApiClient\Api\Shop;
 
 use Diglin\Sylius\ApiClient\Client\ResourceClientInterface;
-use Diglin\Sylius\ApiClient\Exception\HttpException;
 use Diglin\Sylius\ApiClient\Filter\FilterBuilderInterface;
 use Diglin\Sylius\ApiClient\Pagination\PageFactoryInterface;
 use Diglin\Sylius\ApiClient\Pagination\PageInterface;
@@ -12,7 +11,7 @@ use Diglin\Sylius\ApiClient\Pagination\ResourceCursorInterface;
 use Diglin\Sylius\ApiClient\Sort\SortBuilderInterface;
 use Webmozart\Assert\Assert;
 
-class OrderApi implements OrderApiInterface
+final class OrderApi implements OrderApiInterface
 {
     public function __construct(
         private ResourceClientInterface $resourceClient,
