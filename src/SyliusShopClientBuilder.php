@@ -13,6 +13,7 @@ use Diglin\Sylius\ApiClient\Pagination\ResourceCursorFactory;
 use Diglin\Sylius\ApiClient\Routing\UriGenerator;
 use Diglin\Sylius\ApiClient\Security\Authentication;
 use Diglin\Sylius\ApiClient\Stream\MultipartStreamBuilderFactory;
+use Diglin\Sylius\ApiClient\Stream\PatchResourceListResponseFactory;
 use Diglin\Sylius\ApiClient\Stream\UpsertResourceListResponseFactory;
 use Http\Client\HttpClient as Client;
 use Http\Discovery\HttpClientDiscovery;
@@ -120,12 +121,14 @@ class SyliusShopClientBuilder implements SyliusShopClientBuilderInterface
         $authenticatedHttpClient = new AuthenticatedHttpClient($httpClient, $authenticationApi, $authentication);
         $multipartStreamBuilderFactory = new MultipartStreamBuilderFactory($this->getStreamFactory());
         $upsertListResponseFactory = new UpsertResourceListResponseFactory();
+        $patchListResponseFactory = new PatchResourceListResponseFactory();
 
         $resourceClient = new ResourceClient(
             $authenticatedHttpClient,
             $uriGenerator,
             $multipartStreamBuilderFactory,
-            $upsertListResponseFactory
+            $upsertListResponseFactory,
+            $patchListResponseFactory,
         );
 
         $pageFactory = new PageFactory($authenticatedHttpClient, $uriGenerator);
@@ -137,14 +140,32 @@ class SyliusShopClientBuilder implements SyliusShopClientBuilderInterface
                 $authentication,
                 new Api\Shop\AddressApi($resourceClient, $pageFactory, $cursorFactory),
                 new Api\Shop\AdjustmentApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\CatalogPromotionApi($resourceClient),
                 new Api\Shop\ChannelApi($resourceClient),
                 new Api\Shop\CountryApi($resourceClient, $pageFactory, $cursorFactory),
-                new Api\Shop\CurrencyApi($resourceClient),
+                new Api\Shop\CurrencyApi($resourceClient, $pageFactory, $cursorFactory),
                 new Api\Shop\CustomerApi($resourceClient),
                 new Api\Shop\LocaleApi($resourceClient, $pageFactory, $cursorFactory),
                 new Api\Shop\OrderItemUnitApi($resourceClient),
                 new Api\Shop\OrderItemApi($resourceClient, $pageFactory, $cursorFactory),
                 new Api\Shop\OrderApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\PaymentApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ShipmentApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\PaymentMethodApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductImageApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductOptionValueApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductOptionApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductReviewApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductTaxonApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductTranslationApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductVariantTranslationApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductVariantApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ShippingMethodApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\TaxonTranslationApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\TaxonApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\VerifyCustomerAccountApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ResetPasswordRequestApi($resourceClient, $pageFactory, $cursorFactory),
             )
         );
 

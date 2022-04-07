@@ -26,26 +26,26 @@ final class AdjustmentApi implements AdjustmentApiInterface
     }
 
     public function listPerPage(
-        $code,
+        $parentCode,
         int $limit = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
     ): PageInterface {
-        Assert::string($code);
-        $data = $this->resourceClient->getResources('api/v2/admin/order-items/%s/adjustments', [$code]);
+        Assert::string($parentCode);
+        $data = $this->resourceClient->getResources('api/v2/admin/order-items/%s/adjustments', [$parentCode]);
 
         return $this->pageFactory->createPage($data);
     }
 
     public function all(
-        $code,
+        $parentCode,
         int $pageSize = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
     ): ResourceCursorInterface {
-        $data = $this->listPerPage($code, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
+        $data = $this->listPerPage($parentCode, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
 
         return $this->cursorFactory->createCursor($pageSize, $data);
     }

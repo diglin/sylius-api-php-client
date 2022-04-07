@@ -25,6 +25,12 @@ final class PromotionApi implements PromotionApiInterface
         return $this->resourceClient->getResource('api/v2/admin/promotions/%d', [$code]);
     }
 
+    public function create($code, array $data = []): int
+    {
+        Assert::integer($code);
+        return $this->resourceClient->createResource('api/v2/admin/promotions', [], $data);
+    }
+
     public function listPerPage(
         int $limit = 10,
         array $queryParameters = [],

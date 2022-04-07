@@ -26,26 +26,26 @@ final class ProvinceApi implements ProvinceApiInterface
     }
 
     public function listPerPage(
-        $code,
+        $parentCode,
         int $limit = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
     ): PageInterface {
-        $data = $this->resourceClient->getResources('api/v2/admin/countries/%d/provinces', [$code], $limit, $queryParameters, $filterBuilder, $sortBuilder);
+        $data = $this->resourceClient->getResources('api/v2/admin/countries/%d/provinces', [$parentCode], $limit, $queryParameters, $filterBuilder, $sortBuilder);
 
         return $this->pageFactory->createPage($data);
     }
 
     public function all(
-        $code,
+        $parentCode,
         int $pageSize = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
     ): ResourceCursorInterface {
-        Assert::string($code);
-        $data = $this->listPerPage($code, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
+        Assert::string($parentCode);
+        $data = $this->listPerPage($parentCode, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
 
         return $this->cursorFactory->createCursor($pageSize, $data);
     }

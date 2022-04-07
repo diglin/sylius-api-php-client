@@ -38,9 +38,9 @@ class ProductVariantsApi implements ProductVariantsApiInterface
         $this->cursorFactory = $cursorFactory;
     }
 
-    public function get($productCode, $variantCode): array
+    public function get($parentCode, $code): array
     {
-        return $this->resourceClient->getResource(static::ENDPOINT_URI, [$productCode, $variantCode]);
+        return $this->resourceClient->getResource(static::ENDPOINT_URI, [$parentCode, $code]);
     }
 
     public function create($code, array $data = []): int
@@ -48,31 +48,31 @@ class ProductVariantsApi implements ProductVariantsApiInterface
         return $this->resourceClient->createResource(static::ENDPOINTS_URI, [$code], $data);
     }
 
-    public function delete($productCode, $variantCode): int
+    public function delete($parentCode, $code): int
     {
-        return $this->resourceClient->deleteResource(static::ENDPOINT_URI, [$productCode, $variantCode]);
+        return $this->resourceClient->deleteResource(static::ENDPOINT_URI, [$parentCode, $code]);
     }
 
     public function all(
-        $productCode,
+        $parentCode,
         $pageSize = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
     ): ResourceCursorInterface {
-        $firstPage = $this->listPerPage($productCode, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
+        $firstPage = $this->listPerPage($parentCode, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
 
         return $this->cursorFactory->createCursor($pageSize, $firstPage);
     }
 
     public function listPerPage(
-        $productCode,
+        $parentCode,
         $limit = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
     ): PageInterface {
-        $data = $this->resourceClient->getResources(static::ENDPOINTS_URI, [$productCode], $limit, $queryParameters, $filterBuilder, $sortBuilder);
+        $data = $this->resourceClient->getResources(static::ENDPOINTS_URI, [$parentCode], $limit, $queryParameters, $filterBuilder, $sortBuilder);
 
         return $this->pageFactory->createPage($data);
     }

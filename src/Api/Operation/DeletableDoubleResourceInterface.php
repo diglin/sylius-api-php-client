@@ -9,12 +9,12 @@ interface DeletableDoubleResourceInterface
     /**
      * Deletes a resource.
      *
-     * @param string|int $code code of the parent resource
-     * @param string|int $id   code or id of the resource to get
-     *
-     * @throws HttpException
+     * @param string|int $parentCode Code of the parent resource
+     * @param string|int $code       Code or id of the resource to delete
      *
      * @return int status code 204 indicating that the resource has been well deleted
+     *@throws HttpException
+     *
      */
-    public function delete($code, string|int $id): int;
+    public function delete($parentCode, $code): int;
 }

@@ -59,7 +59,20 @@ final class ProductOptionApi implements ProductOptionApiInterface
         return $this->resourceClient->upsertResource('api/v2/admin/product-options/%s', [$code], $data);
     }
 
-    public function listValues(
+    public function listValuesPerPage(
+        string $code,
+        int $pageSize = 10,
+        array $queryParameters = [],
+        FilterBuilderInterface $filterBuilder = null,
+        SortBuilderInterface $sortBuilder = null
+    ): PageInterface {
+        Assert::string($code);
+        $data = $this->resourceClient->getResources('api/v2/admin/product-options/%s/values', [$code], $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
+
+        return $this->pageFactory->createPage($data);
+    }
+
+    public function allValues(
         string $code,
         int $pageSize = 10,
         array $queryParameters = [],
@@ -67,8 +80,8 @@ final class ProductOptionApi implements ProductOptionApiInterface
         SortBuilderInterface $sortBuilder = null
     ): ResourceCursorInterface {
         Assert::string($code);
-        $data = $this->resourceClient->getResources('api/v2/admin/product-options/%s/values', [$code], $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
+        $data = $this->listValuesPerPage($code, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
 
-        return $this->cursorFactory->createCursor($pageSize, $this->pageFactory->createPage($data));
+        return $this->cursorFactory->createCursor($pageSize, $data);
     }
 }

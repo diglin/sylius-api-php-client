@@ -26,25 +26,25 @@ final class ZoneMemberApi implements ZoneMemberApiInterface
     }
 
     public function listPerPage(
-        $code,
+        $parentCode,
         int $limit = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
     ): PageInterface {
-        $data = $this->resourceClient->getResources('api/v2/admin/zones/%s/members', [$code], $limit, $queryParameters, $filterBuilder, $sortBuilder);
+        $data = $this->resourceClient->getResources('api/v2/admin/zones/%s/members', [$parentCode], $limit, $queryParameters, $filterBuilder, $sortBuilder);
 
         return $this->pageFactory->createPage($data);
     }
 
     public function all(
-        $code,
+        $parentCode,
         int $pageSize = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
     ): ResourceCursorInterface {
-        $data = $this->listPerPage($code, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
+        $data = $this->listPerPage($parentCode, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
 
         return $this->cursorFactory->createCursor($pageSize, $data);
     }

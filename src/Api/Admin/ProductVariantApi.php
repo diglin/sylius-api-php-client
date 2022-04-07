@@ -25,10 +25,10 @@ final class ProductVariantApi implements ProductVariantApiInterface
         return $this->resourceClient->getResource('api/v2/admin/product-variants/%s', [$code]);
     }
 
-    public function upsert($code, array $data = []): int
+    public function create($code, array $data = []): int
     {
         Assert::string($code);
-        return $this->resourceClient->upsertResource('api/v2/admin/product-variants/%s', [$code]);
+        return $this->resourceClient->createResource('api/v2/admin/product-variants', [], $data);
     }
 
     public function listPerPage(
@@ -51,5 +51,11 @@ final class ProductVariantApi implements ProductVariantApiInterface
         $data = $this->listPerPage($pageSize, $queryParameters, $filterBuilder, $sortBuilder);
 
         return $this->cursorFactory->createCursor($pageSize, $data);
+    }
+
+    public function upsert($code, array $data = []): int
+    {
+        Assert::string($code);
+        return $this->resourceClient->upsertResource('api/v2/admin/product-variants/%s', [$code]);
     }
 }

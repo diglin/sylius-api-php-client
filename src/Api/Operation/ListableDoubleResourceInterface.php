@@ -14,17 +14,17 @@ interface ListableDoubleResourceInterface
      * Gets a list of resources by returning the first page.
      * Consequently, this method does not return all the resources.
      *
-     * @param string|int $code       code of the parent resource
+     * @param string|int $parentCode Code of the parent resource
      * @param int   $limit           The maximum number of resources to return.
      *                               Do note that the server has a maximum limit allowed.
      * @param array $queryParameters additional query parameters to pass in the request
      *
-     * @throws HttpException if the request failed
-     *
      * @return PageInterface
+     *@throws HttpException if the request failed
+     *
      */
     public function listPerPage(
-        $code,
+        $parentCode,
         int $limit = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
@@ -34,7 +34,7 @@ interface ListableDoubleResourceInterface
     /**
      * Gets a cursor to iterate over a list of resources.
      *
-     * @param string|int $code            code of the parent resource
+     * @param string|int $parentCode      Code of the parent resource
      * @param int        $pageSize        The size of the page returned by the server.
      *                                    Do note that the server has a maximum limit allowed.
      * @param array      $queryParameters Additional query parameters to pass in the request
@@ -42,7 +42,7 @@ interface ListableDoubleResourceInterface
      * @return ResourceCursorInterface
      */
     public function all(
-        $code,
+        $parentCode,
         int $pageSize = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,

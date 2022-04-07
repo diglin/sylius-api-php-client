@@ -8,8 +8,10 @@ use Diglin\Sylius\ApiClient\Api\Operation\ListableResourceInterface;
 use Diglin\Sylius\ApiClient\Api\Operation\UpsertableResourceInterface;
 use Diglin\Sylius\ApiClient\Exception\HttpException;
 use Diglin\Sylius\ApiClient\Filter\FilterBuilderInterface;
+use Diglin\Sylius\ApiClient\Pagination\PageInterface;
 use Diglin\Sylius\ApiClient\Pagination\ResourceCursorInterface;
 use Diglin\Sylius\ApiClient\Sort\SortBuilderInterface;
+use Webmozart\Assert\Assert;
 
 interface ProductOptionApiInterface extends GettableResourceInterface, ListableResourceInterface, CreatableResourceInterface, UpsertableResourceInterface
 {
@@ -20,7 +22,15 @@ interface ProductOptionApiInterface extends GettableResourceInterface, ListableR
      *
      * @throws HttpException if the request failed
      */
-    public function listValues(
+    public function listValuesPerPage(
+        string $code,
+        int $pageSize = 10,
+        array $queryParameters = [],
+        FilterBuilderInterface $filterBuilder = null,
+        SortBuilderInterface $sortBuilder = null
+    ): PageInterface;
+
+    public function allValues(
         string $code,
         int $pageSize = 10,
         array $queryParameters = [],

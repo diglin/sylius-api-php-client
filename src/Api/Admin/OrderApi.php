@@ -53,27 +53,51 @@ final class OrderApi implements OrderApiInterface
         return $this->resourceClient->patchResource('api/v2/admin/orders/%s/cancel', [$code], $data);
     }
 
-    public function listPayments(
+    public function listPaymentsPerPage(
         string $code,
         int $pageSize = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
-    ): ResourceCursorInterface {
-        $data = $this->resourceClient->getResources('api/v2/admin/orders/%s/payments', [], $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
+    ): PageInterface {
+        $data = $this->resourceClient->getResources('api/v2/admin/orders/%s/payments', [$code], $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
 
-        return $this->cursorFactory->createCursor($pageSize, $this->pageFactory->createPage($data));
+        return $this->pageFactory->createPage($data);
     }
 
-    public function listShipments(
+    public function allPayments(
         string $code,
         int $pageSize = 10,
         array $queryParameters = [],
         FilterBuilderInterface $filterBuilder = null,
         SortBuilderInterface $sortBuilder = null
     ): ResourceCursorInterface {
-        $data = $this->resourceClient->getResources('api/v2/admin/orders/%s/shipments', [], $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
+        $data = $this->listPaymentsPerPage($code, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
 
-        return $this->cursorFactory->createCursor($pageSize, $this->pageFactory->createPage($data));
+        return $this->cursorFactory->createCursor($pageSize, $data);
+    }
+
+    public function listShipmentsPerPage(
+        string $code,
+        int $pageSize = 10,
+        array $queryParameters = [],
+        FilterBuilderInterface $filterBuilder = null,
+        SortBuilderInterface $sortBuilder = null
+    ): PageInterface {
+        $data = $this->resourceClient->getResources('api/v2/admin/orders/%s/shipments', [$code], $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
+
+        return $this->pageFactory->createPage($data);
+    }
+
+    public function allShipments(
+        string $code,
+        int $pageSize = 10,
+        array $queryParameters = [],
+        FilterBuilderInterface $filterBuilder = null,
+        SortBuilderInterface $sortBuilder = null
+    ): ResourceCursorInterface {
+        $data = $this->listShipmentsPerPage($code, $pageSize, $queryParameters, $filterBuilder, $sortBuilder);
+
+        return $this->cursorFactory->createCursor($pageSize, $data);
     }
 }
