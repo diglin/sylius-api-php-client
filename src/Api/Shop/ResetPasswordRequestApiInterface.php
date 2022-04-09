@@ -2,6 +2,9 @@
 
 namespace Diglin\Sylius\ApiClient\Api\Shop;
 
-interface ResetPasswordRequestApiInterface
+use Diglin\Sylius\ApiClient\Api\Operation\CreatableResourceInterface;
+
+interface ResetPasswordRequestApiInterface extends CreatableResourceInterface
 {
+    public function verify(string $token): int;
 }

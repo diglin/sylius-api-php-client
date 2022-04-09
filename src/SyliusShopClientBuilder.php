@@ -24,11 +24,11 @@ use Psr\Http\Message\StreamFactoryInterface;
 class SyliusShopClientBuilder implements SyliusShopClientBuilderInterface
 {
     private string $baseUri;
-    private Client $httpClient;
-    private RequestFactoryInterface $requestFactory;
-    private StreamFactoryInterface $streamFactory;
-    private FileSystemInterface $fileSystem;
-    /** @var list<Api\ApiAwareInterface> */
+    private ?Client $httpClient;
+    private ?RequestFactoryInterface $requestFactory;
+    private ?StreamFactoryInterface $streamFactory;
+    private ?FileSystemInterface $fileSystem;
+    /** @var array<string, Api\ApiAwareInterface> */
     private array $apiRegistry = [];
     /** @var array<string, string> */
     private array $defaultHeaders = [];
@@ -152,20 +152,21 @@ class SyliusShopClientBuilder implements SyliusShopClientBuilderInterface
                 new Api\Shop\PaymentApi($resourceClient, $pageFactory, $cursorFactory),
                 new Api\Shop\ShipmentApi($resourceClient, $pageFactory, $cursorFactory),
                 new Api\Shop\PaymentMethodApi($resourceClient, $pageFactory, $cursorFactory),
-                new Api\Shop\ProductImageApi($resourceClient, $pageFactory, $cursorFactory),
-                new Api\Shop\ProductOptionValueApi($resourceClient, $pageFactory, $cursorFactory),
-                new Api\Shop\ProductOptionApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductImageApi($resourceClient),
+                new Api\Shop\ProductOptionValueApi($resourceClient),
+                new Api\Shop\ProductOptionApi($resourceClient),
                 new Api\Shop\ProductReviewApi($resourceClient, $pageFactory, $cursorFactory),
-                new Api\Shop\ProductTaxonApi($resourceClient, $pageFactory, $cursorFactory),
-                new Api\Shop\ProductTranslationApi($resourceClient, $pageFactory, $cursorFactory),
-                new Api\Shop\ProductVariantTranslationApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ProductTaxonApi($resourceClient),
+                new Api\Shop\ProductTranslationApi($resourceClient),
+                new Api\Shop\ProductVariantTranslationApi($resourceClient),
                 new Api\Shop\ProductVariantApi($resourceClient, $pageFactory, $cursorFactory),
                 new Api\Shop\ProductApi($resourceClient, $pageFactory, $cursorFactory),
                 new Api\Shop\ShippingMethodApi($resourceClient, $pageFactory, $cursorFactory),
-                new Api\Shop\TaxonTranslationApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\ShippingMethodTranslationApi($resourceClient),
+                new Api\Shop\TaxonTranslationApi($resourceClient),
                 new Api\Shop\TaxonApi($resourceClient, $pageFactory, $cursorFactory),
-                new Api\Shop\VerifyCustomerAccountApi($resourceClient, $pageFactory, $cursorFactory),
-                new Api\Shop\ResetPasswordRequestApi($resourceClient, $pageFactory, $cursorFactory),
+                new Api\Shop\VerifyCustomerAccountApi($resourceClient),
+                new Api\Shop\ResetPasswordRequestApi($resourceClient),
             )
         );
 

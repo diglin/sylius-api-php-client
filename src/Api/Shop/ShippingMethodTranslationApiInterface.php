@@ -3,7 +3,8 @@
 namespace Diglin\Sylius\ApiClient\Api\Shop;
 
 use Diglin\Sylius\ApiClient\Api\Operation\GettableResourceInterface;
+use Diglin\Sylius\ApiClient\Api\Operation\ListableResourceInterface;
 
-interface TaxonTranslationApiInterface extends GettableResourceInterface
+interface ShippingMethodTranslationApiInterface extends GettableResourceInterface
 {
 }

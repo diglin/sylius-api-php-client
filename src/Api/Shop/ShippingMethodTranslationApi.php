@@ -5,7 +5,7 @@ namespace Diglin\Sylius\ApiClient\Api\Shop;
 use Diglin\Sylius\ApiClient\Client\ResourceClientInterface;
 use Webmozart\Assert\Assert;
 
-final class ProductOptionValueApi implements ProductOptionValueApiInterface
+final class ShippingMethodTranslationApi implements ShippingMethodTranslationApiInterface
 {
     public function __construct(
         private ResourceClientInterface $resourceClient,
@@ -14,6 +14,6 @@ final class ProductOptionValueApi implements ProductOptionValueApiInterface
     public function get($code): array
     {
         Assert::string($code);
-        return $this->resourceClient->getResource('api/v2/shop/product-option-values/%s', [$code]);
+        return $this->resourceClient->getResource('api/v2/shop/shipping-method-translations/%s', [$code]);
     }
 }

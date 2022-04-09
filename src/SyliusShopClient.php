@@ -33,6 +33,7 @@ class SyliusShopClient implements SyliusShopClientInterface
         private Api\Shop\ProductVariantApiInterface $productVariantApi,
         private Api\Shop\ProductApiInterface $productApi,
         private Api\Shop\ShippingMethodApiInterface $shippingMethodApi,
+        private Api\Shop\ShippingMethodTranslationApiInterface $shippingMethodTranslationApi,
         private Api\Shop\TaxonTranslationApiInterface $taxonTranslationApi,
         private Api\Shop\TaxonApiInterface $taxonApi,
         private Api\Shop\VerifyCustomerAccountApiInterface $verifyCustomerAccountApi,
@@ -157,6 +158,11 @@ class SyliusShopClient implements SyliusShopClientInterface
     public function getShippingMethodApi(): Api\Shop\ShippingMethodApiInterface
     {
         return $this->shippingMethodApi;
+    }
+
+    public function getShippingMethodTranslationApi(): Api\Shop\ShippingMethodTranslationApiInterface
+    {
+        return $this->shippingMethodTranslationApi;
     }
 
     public function getTaxonTranslationApi(): Api\Shop\TaxonTranslationApiInterface

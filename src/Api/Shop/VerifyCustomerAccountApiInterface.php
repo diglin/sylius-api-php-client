@@ -2,6 +2,9 @@
 
 namespace Diglin\Sylius\ApiClient\Api\Shop;
 
-interface VerifyCustomerAccountApiInterface
+use Diglin\Sylius\ApiClient\Api\Operation\CreatableResourceInterface;
+
+interface VerifyCustomerAccountApiInterface extends CreatableResourceInterface
 {
+    public function verify(string $token): int;
 }

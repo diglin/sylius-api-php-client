@@ -23,11 +23,11 @@ use Psr\Http\Message\StreamFactoryInterface;
 class SyliusAdminClientBuilder implements SyliusAdminClientBuilderInterface
 {
     private string $baseUri;
-    private Client $httpClient;
-    private RequestFactoryInterface $requestFactory;
-    private StreamFactoryInterface $streamFactory;
-    private FileSystemInterface $fileSystem;
-    /** @var list<Api\ApiAwareInterface> */
+    private ?Client $httpClient;
+    private ?RequestFactoryInterface $requestFactory;
+    private ?StreamFactoryInterface $streamFactory;
+    private ?FileSystemInterface $fileSystem;
+    /** @var array<string, Api\ApiAwareInterface> */
     private array $apiRegistry = [];
     /** @var array<string, string> */
     private array $defaultHeaders = [];

@@ -30,6 +30,7 @@ interface SyliusShopClientInterface
     public function getProductVariantApi(): Api\Shop\ProductVariantApiInterface;
     public function getProductApi(): Api\Shop\ProductApiInterface;
     public function getShippingMethodApi(): Api\Shop\ShippingMethodApiInterface;
+    public function getShippingMethodTranslationApi(): Api\Shop\ShippingMethodTranslationApiInterface;
     public function getTaxonTranslationApi(): Api\Shop\TaxonTranslationApiInterface;
     public function getTaxonApi(): Api\Shop\TaxonApiInterface;
     public function getVerifyCustomerAccountApi(): Api\Shop\VerifyCustomerAccountApiInterface;

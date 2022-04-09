@@ -2,6 +2,8 @@
 
 namespace Diglin\Sylius\ApiClient\Api\Shop;
 
-interface ProductOptionApiInterface
+use Diglin\Sylius\ApiClient\Api\Operation\GettableResourceInterface;
+
+interface ProductOptionApiInterface extends GettableResourceInterface
 {
 }
