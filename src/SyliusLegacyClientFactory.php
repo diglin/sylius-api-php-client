@@ -23,6 +23,7 @@ use Diglin\Sylius\ApiClient\Pagination\ResourceCursorFactory;
 use Diglin\Sylius\ApiClient\Routing\UriGenerator;
 use Diglin\Sylius\ApiClient\Security\LegacyAuthentication;
 use Diglin\Sylius\ApiClient\Stream\MultipartStreamBuilderFactory;
+use Diglin\Sylius\ApiClient\Stream\PatchResourceListResponseFactory;
 use Diglin\Sylius\ApiClient\Stream\UpsertResourceListResponseFactory;
 use Http\Client\HttpClient as Client;
 use Http\Discovery\HttpClientDiscovery;
@@ -69,12 +70,14 @@ class SyliusLegacyClientFactory implements SyliusLegacyClientBuilderInterface
         $authenticatedHttpClient = new AuthenticatedHttpClient($httpClient, $authenticationApi, $authentication);
         $multipartStreamBuilderFactory = new MultipartStreamBuilderFactory($this->getStreamFactory());
         $upsertListResponseFactory = new UpsertResourceListResponseFactory();
+        $patchListResponseFactory = new PatchResourceListResponseFactory();
 
         $resourceClient = new ResourceClient(
             $authenticatedHttpClient,
             $uriGenerator,
             $multipartStreamBuilderFactory,
-            $upsertListResponseFactory
+            $upsertListResponseFactory,
+            $patchListResponseFactory,
         );
 
         $pageFactory = new PageFactory($authenticatedHttpClient, $uriGenerator);
