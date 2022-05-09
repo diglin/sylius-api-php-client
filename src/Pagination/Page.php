@@ -28,25 +28,30 @@ class Page implements PageInterface
     /** @var string */
     protected $nextLink;
 
+    /** @var string|null */
+    protected $selfLink;
+
     /** @var int */
     protected $count;
 
     /** @var array */
-    protected $items;
+    protected         $items;
 
     /**
      * @param string      $firstLink
      * @param null|string $previousLink
      * @param null|string $nextLink
+     * @param null|string $selfLink
      * @param null|int    $count
      */
-    public function __construct(PageFactoryInterface $pageFactory, HttpClientInterface $httpClient, $firstLink, $previousLink, $nextLink, $count, array $items)
+    public function __construct(PageFactoryInterface $pageFactory, HttpClientInterface $httpClient, $firstLink, $previousLink, $nextLink, $selfLink, $count, array $items)
     {
         $this->pageFactory = $pageFactory;
         $this->httpClient = $httpClient;
         $this->firstLink = $firstLink;
         $this->previousLink = $previousLink;
         $this->nextLink = $nextLink;
+        $this->selfLink = $selfLink;
         $this->count = $count;
         $this->items = $items;
     }
@@ -96,7 +101,7 @@ class Page implements PageInterface
      */
     public function hasNextPage()
     {
-        return null !== $this->nextLink;
+        return null !== $this->nextLink && $this->selfLink != $this->nextLink;
     }
 
     /**

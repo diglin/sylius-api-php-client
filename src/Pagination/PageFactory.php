@@ -35,6 +35,7 @@ final class PageFactory implements PageFactoryInterface
         $nextLink = $data['_links']['next']['href'] ?? null;
         $previousLink = $data['_links']['previous']['href'] ?? null;
         $firstLink = $data['_links']['first']['href'] ?? null;
+        $selftLink = $data['_links']['self']['href'] ?? null;
         $count = $data['total'] ?? null;
         $items = $data['_embedded']['items'] ?? [];
 
@@ -44,6 +45,7 @@ final class PageFactory implements PageFactoryInterface
             $firstLink,
             $previousLink,
             $nextLink,
+            $selftLink,
             $count,
             $items
         );
