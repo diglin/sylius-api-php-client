@@ -16,11 +16,11 @@ interface DeletableResourceInterface
     /**
      * Deletes a resource.
      *
-     * @param mixed $code code or id of the resource to delete
+     * @param string|int $code code or id of the resource to delete
      *
      * @throws HttpException
      *
      * @return int status code 204 indicating that the resource has been well deleted
      */
-    public function delete($code);
+    public function delete($code): int;
 }

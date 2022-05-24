@@ -2,6 +2,8 @@
 
 namespace Diglin\Sylius\ApiClient\Security;
 
+use Diglin\Sylius\ApiClient\Api;
+
 /**
  * Credential data to authenticate to the API.
  *
@@ -11,137 +13,56 @@ namespace Diglin\Sylius\ApiClient\Security;
  */
 class Authentication
 {
-    /** @var string */
-    protected $clientId;
+    private ?string $username = null;
+    private ?string $password = null;
+    private ?string $accessToken = null;
 
-    /** @var string */
-    protected $secret;
-
-    /** @var string */
-    protected $username;
-
-    /** @var string */
-    protected $password;
-
-    /** @var string */
-    protected $accessToken;
-
-    /** @var string */
-    protected $refreshToken;
-
-    /** @var array */
-    protected $xauthtokenHeader;
-
-    /**
-     * @return Authentication
-     */
-    public static function fromPassword(string $clientId, string $secret, string $username, string $password)
+    public static function fromPassword(string $username, string $password): self
     {
         $authentication = new static();
-        $authentication->clientId = $clientId;
-        $authentication->secret = $secret;
         $authentication->username = $username;
         $authentication->password = $password;
 
         return $authentication;
     }
 
-    /**
-     * @return Authentication
-     */
-    public static function fromToken(string $clientId, string $secret, string $accessToken, string $refreshToken)
+    public static function fromAccessToken(string $accessToken): self
     {
         $authentication = new static();
-        $authentication->clientId = $clientId;
-        $authentication->secret = $secret;
         $authentication->accessToken = $accessToken;
-        $authentication->refreshToken = $refreshToken;
 
         return $authentication;
     }
 
-    public static function fromXAuthToken(array $fromXAuthToken)
-    {
-        $authentication = new static();
-        $authentication->xauthtokenHeader = $fromXAuthToken;
+    public function authenticateByPassword(
+        Api\Authentication\AuthenticationApiInterface $api
+    ): self {
+        $result = $api->authenticateByPassword($this->username, $this->password);
 
-        return $authentication;
-    }
-
-    /**
-     * @return string
-     */
-    public function getClientId()
-    {
-        return $this->clientId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSecret()
-    {
-        return $this->secret;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getAccessToken()
-    {
-        return $this->accessToken;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getRefreshToken()
-    {
-        return $this->refreshToken;
-    }
-
-    /**
-     * @param string $accessToken
-     *
-     * @return Authentication
-     */
-    public function setAccessToken($accessToken)
-    {
-        $this->accessToken = $accessToken;
+        $this->accessToken = $result['token'];
 
         return $this;
     }
 
-    /**
-     * @param string $refreshToken
-     *
-     * @return Authentication
-     */
-    public function setRefreshToken($refreshToken)
+    public function appendHeaders(array $headers): array
     {
-        $this->refreshToken = $refreshToken;
-
-        return $this;
+        return array_merge(
+            $headers,
+            [
+                'Authorization' => sprintf('Bearer %s', $this->accessToken),
+            ]
+        );
     }
 
-    public function getXauthtokenHeader(): ?array
+    public function hasAccessToken(): bool
     {
-        return $this->xauthtokenHeader;
+        return $this->accessToken !== null;
+    }
+
+    public function clearAccessToken(): self
+    {
+        $this->accessToken = null;
+
+        return $this;
     }
 }

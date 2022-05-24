@@ -9,12 +9,10 @@ interface GettableDoubleResourceInterface
     /**
      * Gets a resource by its code.
      *
-     * @param mixed $code code of the parent resource
-     * @param mixed $id   code or id of the resource to get
+     * @param string|int $parentCode code of the parent resource
+     * @param string|int $code   code or id of the resource to get
      *
      * @throws HttpException if the request failed
-     *
-     * @return array
      */
-    public function get($code, $id);
+    public function get($parentCode, $code): array;
 }

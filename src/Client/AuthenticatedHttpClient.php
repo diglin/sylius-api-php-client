@@ -2,9 +2,10 @@
 
 namespace Diglin\Sylius\ApiClient\Client;
 
-use Diglin\Sylius\ApiClient\Api\AuthenticationApiInterface;
+use Diglin\Sylius\ApiClient\Api;
 use Diglin\Sylius\ApiClient\Exception\UnauthorizedHttpException;
 use Diglin\Sylius\ApiClient\Security\Authentication;
+use Psr\Log\LoggerInterface;
 
 /**
  * Http client to send an authenticated request.
@@ -20,24 +21,11 @@ use Diglin\Sylius\ApiClient\Security\Authentication;
  */
 class AuthenticatedHttpClient implements HttpClientInterface
 {
-    /** @var HttpClient */
-    protected $basicHttpClient;
-
-    /** @var AuthenticationApiInterface */
-    protected $authenticationApi;
-
-    /** @var Authentication */
-    protected $authentication;
-
     public function __construct(
-        HttpClient $basicHttpClient,
-        AuthenticationApiInterface $authenticationApi,
-        Authentication $authentication
-    ) {
-        $this->basicHttpClient = $basicHttpClient;
-        $this->authenticationApi = $authenticationApi;
-        $this->authentication = $authentication;
-    }
+        private HttpClient $basicHttpClient,
+        private Api\Authentication\AuthenticationApiInterface $authenticationApi,
+        private Authentication $authentication,
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -45,50 +33,14 @@ class AuthenticatedHttpClient implements HttpClientInterface
     public function sendRequest($httpMethod, $uri, array $headers = [], $body = null)
     {
         try {
-            $xauthtokenDetected = false;
-            foreach ((array) $this->authentication->getXauthtokenHeader() as $name => $value) {
-                $headers[$name] = $value;
-                $xauthtokenDetected = true;
+            if (!$this->authentication->hasAccessToken()) {
+                $this->authentication->authenticateByPassword($this->authenticationApi);
             }
 
-            if ($xauthtokenDetected) {
-                return $this->basicHttpClient->sendRequest($httpMethod, $uri, $headers, $body);
-            }
-        } catch (UnauthorizedHttpException $e) {
-            // Do nothing and process to standard authentication
-        }
-
-        if (null === $this->authentication->getAccessToken()) {
-            $tokens = $this->authenticationApi->authenticateByPassword(
-                $this->authentication->getClientId(),
-                $this->authentication->getSecret(),
-                $this->authentication->getUsername(),
-                $this->authentication->getPassword()
-            );
-
-            $this->authentication
-                ->setAccessToken($tokens['access_token'])
-                ->setRefreshToken($tokens['refresh_token'])
-            ;
-        }
-
-        try {
-            $headers['Authorization'] = sprintf('Bearer %s', $this->authentication->getAccessToken());
-            $response = $this->basicHttpClient->sendRequest($httpMethod, $uri, $headers, $body);
-        } catch (UnauthorizedHttpException $e) {
-            $tokens = $this->authenticationApi->authenticateByRefreshToken(
-                $this->authentication->getClientId(),
-                $this->authentication->getSecret(),
-                $this->authentication->getRefreshToken()
-            );
-
-            $this->authentication
-                ->setAccessToken($tokens['access_token'])
-                ->setRefreshToken($tokens['refresh_token'])
-            ;
-
-            $headers['Authorization'] = sprintf('Bearer %s', $this->authentication->getAccessToken());
-            $response = $this->basicHttpClient->sendRequest($httpMethod, $uri, $headers, $body);
+            $response = $this->basicHttpClient->sendRequest($httpMethod, $uri, $this->authentication->appendHeaders($headers), $body);
+        } catch (UnauthorizedHttpException) {
+            $this->authentication->authenticateByPassword($this->authenticationApi);
+            $response = $this->basicHttpClient->sendRequest($httpMethod, $uri, $this->authentication->appendHeaders($headers), $body);
         }
 
         return $response;

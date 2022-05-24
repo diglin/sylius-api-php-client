@@ -2,7 +2,7 @@
 
 namespace spec\Diglin\Sylius\ApiClient\Client;
 
-use Diglin\Sylius\ApiClient\Api\AuthenticationApiInterface;
+use Diglin\Sylius\ApiClient\Api\Authentication\AuthenticationApiInterface;
 use Diglin\Sylius\ApiClient\Client\AuthenticatedHttpClient;
 use Diglin\Sylius\ApiClient\Client\HttpClient;
 use Diglin\Sylius\ApiClient\Client\HttpClientInterface;

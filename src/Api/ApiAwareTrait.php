@@ -18,34 +18,27 @@ use Diglin\Sylius\ApiClient\Pagination\ResourceCursorFactoryInterface;
 
 trait ApiAwareTrait
 {
-    /** @var ResourceClientInterface */
-    protected $resourceClient;
+    private ResourceClientInterface $resourceClient;
+    private PageFactoryInterface $pageFactory;
+    private ResourceCursorFactoryInterface $cursorFactory;
+    private FileSystemInterface $fileSystem;
 
-    /** @var PageFactoryInterface */
-    protected $pageFactory;
-
-    /** @var ResourceCursorFactoryInterface */
-    protected $cursorFactory;
-
-    /** @var FileSystemInterface */
-    protected $fileSystem;
-
-    public function setResourceClient(ResourceClientInterface $resourceClient)
+    public function setResourceClient(ResourceClientInterface $resourceClient): void
     {
         $this->resourceClient = $resourceClient;
     }
 
-    public function setPageFactory(PageFactoryInterface $pageFactory)
+    public function setPageFactory(PageFactoryInterface $pageFactory): void
     {
         $this->pageFactory = $pageFactory;
     }
 
-    public function setCursorFactory(ResourceCursorFactoryInterface $cursorFactory)
+    public function setCursorFactory(ResourceCursorFactoryInterface $cursorFactory): void
     {
         $this->cursorFactory = $cursorFactory;
     }
 
-    public function setFileSystem(FileSystemInterface $fileSystem)
+    public function setFileSystem(FileSystemInterface $fileSystem): void
     {
         $this->fileSystem = $fileSystem;
     }

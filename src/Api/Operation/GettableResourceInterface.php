@@ -16,11 +16,9 @@ interface GettableResourceInterface
     /**
      * Gets a resource by its code.
      *
-     * @param string $code Code of the resource
+     * @param string|int $code Code of the resource
      *
      * @throws HttpException if the request failed
-     *
-     * @return array
      */
-    public function get($code);
+    public function get($code): array;
 }
