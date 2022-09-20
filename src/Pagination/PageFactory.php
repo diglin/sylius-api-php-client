@@ -58,7 +58,7 @@ final class PageFactory implements PageFactoryInterface
                 foreach ($value as $subKey => $subValue) {
                     if (is_string($subValue) && 0 === strpos($subValue, '/')) {
                         $value[$subKey]['href'] = $this->uriGenerator->generate(urldecode($subValue));
-                    } elseif (0 === strpos(current($subValue), '/')) {
+                    } elseif ($subValue !== null && 0 === strpos(current($subValue), '/')) {
                         $value[$subKey]['href'] = $this->uriGenerator->generate(urldecode(current($subValue)));
                     }
                 }
